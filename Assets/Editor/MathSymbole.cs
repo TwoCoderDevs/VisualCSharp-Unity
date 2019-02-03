@@ -25,7 +25,7 @@ public class MathSymbole : Symbole
         if (point.name == "Result")
             switch (m_mathType)
             {
-                case MathType.Divide: return a / b;
+                case MathType.Divide: if(b != 0) return a / b; return 0;
                 case MathType.Multiply: return a * b;
                 case MathType.Add: default: return a + b;
                 case MathType.Subtract: return a - b;

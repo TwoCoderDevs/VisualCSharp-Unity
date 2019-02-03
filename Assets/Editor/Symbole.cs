@@ -73,7 +73,7 @@ public abstract class Symbole : ScriptableObject, IDisposable
             } 
         }
         foreach (var field in fieldPoints)
-            if (field.connectionType == ConnectionType.Output)
+            if (field.connectionType == ConnectionType.Output && field.Connections.Count > 0)
             {
                 var c = GetValue(field);
                 field.SetValue(c);
