@@ -12,11 +12,12 @@ public class SymboleManager
     public Symbole selectedSymbole;
     public ConnectionPoint selectedInputPoint;
     public ConnectionPoint selectedOutputPoint;
-    public Vector2 graphSymboleOffset = Vector2.zero;
     public static List<ConnectionPoint> points;
     private GUIStyle textStyle;
-    public SymboleManager()
+    private FlowchartEditorWindow few;
+    public SymboleManager(FlowchartEditorWindow few)
     {
+        this.few = few;
         background.alignment = TextAnchor.UpperCenter;
         background.fontStyle = FontStyle.Bold;
         background.normal.textColor = Color.white;
@@ -38,7 +39,7 @@ public class SymboleManager
                 if (point.connectionType == ConnectionType.Output)
                     foreach (var input in point.Connections)
                         if (input.connectionType == ConnectionType.Input)
-                            DrawBezier(point.PointPos.center, input.PointPos.center, point.knobeColor);
+                            DrawBezier(few.GraphToScreenSpace(point.PointPos.center), few.GraphToScreenSpace(input.PointPos.center), point.knobeColor);
     }
 
     public void DrawSymboles()
@@ -46,6 +47,7 @@ public class SymboleManager
         for (int i = 0; i < symboles.Count; i++)
         {
             var area = symboles[i].NodeSize;
+            area.position = few.GraphToScreenSpace(area.position);
             GUI.Box(area, symboles[i].name.AddWordSpace(), background);
             GUILayout.BeginArea(new Rect(area.position.x - 8, area.position.y + 35, area.width + 16, area.height - 35));
             var r = EditorGUILayout.BeginVertical();
@@ -60,11 +62,10 @@ public class SymboleManager
             EditorGUILayout.EndVertical();
             GUILayout.EndArea();
             if (r.height > 0)
-                area.height = 43 + r.height;
-            symboles[i].NodeSize = area;
+                symboles[i].NodeSize.height = area.height = 43 + r.height;
             if (symboles[i] == selectedSymbole)
             {
-                GUI.Box(symboles[i].NodeSize, "", highlighted);
+                GUI.Box(area, "", highlighted);
             }
         }
     }
@@ -76,7 +77,7 @@ public class SymboleManager
             for (int i = symboles.Count - 1; i > -1; i--)
             {
                 var area = symboles[i].NodeSize;
-                if (area.Contains(mousePosition))
+                if (area.Contains(few.InvGraphToScreenSpace(mousePosition)))
                 {
                     selectedSymbole = symboles[i];
                     GenericMenu genericMenu = new GenericMenu();
@@ -93,7 +94,7 @@ public class SymboleManager
 
     public void DrawBezierPreview(Vector2 knobeCenter)
     {
-        DrawBezier(knobeCenter, Event.current.mousePosition, Color.white);
+        DrawBezier(few.GraphToScreenSpace(knobeCenter), Event.current.mousePosition, Color.white);
     }
 
     private void DrawBezier(Vector2 start, Vector2 end, Color color)
@@ -144,12 +145,13 @@ public class SymboleManager
 
     public Rect DragSymbole(Rect rect)
     {
-        rect.position += Event.current.delta;
+        rect.position += Event.current.delta * few.zScale - few.pOffset / 2;
         return rect;
     }
 
     public bool OnMouseOverSymbole(Vector2 mousePosition)
     {
+        mousePosition = few.InvGraphToScreenSpace(mousePosition);
         if (symboles != null)
         {
             selectedSymbole = null;
@@ -169,6 +171,7 @@ public class SymboleManager
 
     public bool OnMouseOverInputPoint(Vector2 mousePosition)
     {
+        mousePosition = few.InvGraphToScreenSpace(mousePosition);
         if (points != null)
         {
             selectedInputPoint = null;
@@ -190,6 +193,11 @@ public class SymboleManager
 
     public bool OnMouseOverPoint_Symbole(Vector2 mousePosition)
     {
+        if (OnMouseOverInputPoint(mousePosition) && !selectedOutputPoint)
+        {
+            selectedInputPoint.RemoveConnections();
+            selectedInputPoint = null;
+        }
         if (OnMouseOverOutputPoint(mousePosition))
             return true;
         if (!selectedOutputPoint)
@@ -200,6 +208,7 @@ public class SymboleManager
 
     private bool OnMouseOverOutputPoint(Vector2 mousePosition)
     {
+        mousePosition = few.InvGraphToScreenSpace(mousePosition);
         if (points != null)
         {
             selectedInputPoint = null;
@@ -221,6 +230,7 @@ public class SymboleManager
 
     public void AddNewSymbole(Type symboleType, Vector2 mousePosition)
     {
+        mousePosition = few.InvGraphToScreenSpace(mousePosition);
         if (symboles == null)
         {
             symboles = new List<Symbole>();

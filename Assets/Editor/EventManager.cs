@@ -104,7 +104,7 @@ public class EventManager
                     {
                         var delta = @event.delta;
                         OnPan(delta);
-                        symboleManager.PanSymbole(delta);
+                        //symboleManager.PanSymbole(delta);
                         @event.Use();
                     }
                     break;
@@ -121,7 +121,7 @@ public class EventManager
             case EventType.MouseDown:
                 if (e.button == 0)
                 {
-                    if (symbole.NodeSize.Contains(e.mousePosition) && e.mousePosition.y > 18 && !symboleManager.selectedOutputPoint)
+                    if (symbole.NodeSize.Contains(few.InvGraphToScreenSpace(e.mousePosition)) && e.mousePosition.y > 18 && !symboleManager.selectedOutputPoint)
                     {
                         isDragged = true;
                         GUI.changed = true;
@@ -147,7 +147,7 @@ public class EventManager
                 }
                 break;
         }
-        if (symbole.NodeSize.Contains(e.mousePosition) && e.mousePosition.y > 18 && !symboleManager.selectedOutputPoint)
+        if (symbole.NodeSize.Contains(few.InvGraphToScreenSpace(e.mousePosition)) && e.mousePosition.y > 18 && !symboleManager.selectedOutputPoint)
             return true;
         return false;
     }
@@ -162,7 +162,7 @@ public class EventManager
         {
             case EventType.MouseUp:
                 if (symboleManager.selectedInputPoint)
-                    if (point.symbole != symboleManager.selectedInputPoint.symbole && symboleManager.selectedInputPoint.PointPos.Contains(e.mousePosition))
+                    if (point.symbole != symboleManager.selectedInputPoint.symbole && symboleManager.selectedInputPoint.PointPos.Contains(few.InvGraphToScreenSpace(e.mousePosition)))
                     {
                         point.AddConnection(symboleManager.selectedInputPoint);
                         symboleManager.selectedInputPoint.AddConnection(point);
@@ -171,7 +171,7 @@ public class EventManager
                 symboleManager.selectedOutputPoint = null;
                 break;
         }
-        if (point.PointPos.Contains(e.mousePosition) && e.mousePosition.y > 18)
+        if (point.PointPos.Contains(few.InvGraphToScreenSpace(e.mousePosition)) && e.mousePosition.y > 18)
             return true;
         return false;
     }

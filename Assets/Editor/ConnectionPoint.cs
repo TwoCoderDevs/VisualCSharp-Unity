@@ -28,6 +28,13 @@ public class ConnectionPoint : ScriptableObject
         return Connections.Remove(connectionPoint);
     }
 
+    public void RemoveConnections()
+    {
+        foreach (var con in Connections)
+            con.RemoveConnection(this);
+        Connections.Clear();
+    }
+
     public void RemoveConnection(Symbole symbole)
     {
         foreach (var point in symbole.fieldPoints)
