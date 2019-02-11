@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEditor;
-
+[Serializable]
 public class EventManager
 {
     public SymboleManager symboleManager;
@@ -85,6 +85,9 @@ public class EventManager
                         if (viewSize.Contains(@event.mousePosition))
                         {
                             symboleManager.selectedSymbole = null;
+                            symboleManager.selectedInputPoint = null;
+                            symboleManager.selectedOutputPoint = null;
+                            Selection.activeObject = symboleManager.graph;
                             isPaned = true;
                             GUI.changed = true;
                         }
@@ -110,8 +113,6 @@ public class EventManager
                     break;
             }
     }
-
-    
 
     public bool OnNodeSelected(Symbole symbole)
     {

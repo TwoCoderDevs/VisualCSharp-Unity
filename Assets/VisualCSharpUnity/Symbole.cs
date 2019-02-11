@@ -4,13 +4,35 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEditor;
+using System.ObjectSerializer;
+[Serializable]
+public struct Field
+{
+    public string name;
+    public FieldInfo field;
+    public Field(string name, FieldInfo field)
+    {
+        this.name = name;
+        this.field = field;
+    }
 
+    public void Assign(FieldInfo field)
+    {
+        this.field = field;
+    }
+}
 public abstract class Symbole : ScriptableObject, IDisposable
 {
     public Rect NodeSize = new Rect(0,0,100,200);
-    public List<ConnectionPoint> fieldPoints { get; private set; }
-    private List<FieldInfo> childFields;
-    private bool NoOutput = true;
+    public List<ConnectionPoint> fieldPoints;
+    [SerializeField]
+    private List<Field> childFields;
+    public bool NoOutput = true;
+    public void GUIUpdate()
+    {
+        Update();
+    }
+
     public virtual void Update()
     {
 
@@ -22,28 +44,26 @@ public abstract class Symbole : ScriptableObject, IDisposable
         var fields = type.GetFields();
         foreach (var field in fields)
         {
-            var attris = field.GetCustomAttributes(true);
-            if (attris != null && attris.Length > 0)
+            var attri = field.GetCustomAttribute(typeof(PointAttribute));
+            if (attri != null)
             {
-                var attri = attris[0];
-                var cp = CreateInstance<ConnectionPoint>();
-                cp.Init(this, field, (PointAttribute)attri);
-                if (SymboleManager.points == null)
-                    SymboleManager.points = new List<ConnectionPoint>();
-                if (fieldPoints == null)
-                    fieldPoints = new List<ConnectionPoint>();
-                if (cp.connectionType == ConnectionType.Output)
-                    NoOutput = false;
-                fieldPoints.Add(cp);
-                SymboleManager.points.Add(cp);
+                //var attri = attris[0];
+                    var cp = CreateInstance<ConnectionPoint>();
+                    cp.Init(this, field, (PointAttribute)attri);
+                    if (fieldPoints == null)
+                        fieldPoints = new List<ConnectionPoint>();
+                    if (cp.connectionType == ConnectionType.Output)
+                        NoOutput = false;
+                    fieldPoints.Add(cp);
+                    SymboleManager.AddSymboleStatic(cp);
             }
             else
             {
                 if (field.IsPublic && !field.IsStatic && field.Name != "NodeSize")
                 {
                     if (childFields == null)
-                        childFields = new List<FieldInfo>();
-                    childFields.Add(field);
+                        childFields = new List<Field>();
+                    childFields.Add(new Field(field.Name,field));
                 }
             }
         }
@@ -64,28 +84,43 @@ public abstract class Symbole : ScriptableObject, IDisposable
     {
         foreach (var childField in childFields)
         {
-            if (childField.FieldType.IsEnum)
+            if (childField.field == null)
+                childField.Assign(GetField(childField.name));
+            if (childField.field.FieldType.IsEnum)
             {
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Space(13);
-                SetValue(childField, EditorGUILayout.EnumPopup(childField.Name.AddWordSpace(), GetValue<Enum>(childField), GUILayout.Width(NodeSize.width - 13)));
+                SetValue(childField.field, EditorGUILayout.EnumPopup(childField.name.AddWordSpace(), GetValue<Enum>(childField), GUILayout.Width(NodeSize.width - 13)));
                 EditorGUILayout.EndHorizontal();
             } 
         }
-        foreach (var field in fieldPoints)
-            if (field.connectionType == ConnectionType.Output && field.Connections.Count > 0)
-            {
-                var c = GetValue(field);
-                field.SetValue(c);
-            }
-        if (NoOutput)
-            Update();
+        if (!EditorApplication.isPlaying)
+        {
+            foreach (var field in fieldPoints)
+                if (field.connectionType == ConnectionType.Output && field.Connections.Count > 0)
+                {
+                    var c = GUIGetValue(field);
+                    field.SetValue(c);
+                }
+            if (NoOutput)
+                GUIUpdate();
+        }
+    }
+
+    public object GUIGetValue(ConnectionPoint point)
+    {
+        return GetValue(point);
     }
 
     public virtual object GetValue(ConnectionPoint point)
     {
 
         return default;
+    }
+
+    public FieldInfo GetField(string fieldname)
+    {
+        return GetType().GetField(fieldname);
     }
 
     public T GetInputValue<T>(string fieldname)
@@ -122,9 +157,9 @@ public abstract class Symbole : ScriptableObject, IDisposable
     public T GetOutputValue<T>(string fieldname)
     {
         foreach (var field in childFields)
-            if (field.Name == fieldname)
-                if (field != null)
-                    return (T)field.GetValue(this);
+            if (field.name == fieldname)
+                if (field.field != null)
+                    return (T)field.field.GetValue(this);
 
         return (T)default;
     }
@@ -135,10 +170,10 @@ public abstract class Symbole : ScriptableObject, IDisposable
             field.SetValue(this, value);
     }
 
-    public T GetValue<T>(FieldInfo field)
+    public T GetValue<T>(Field field)
     {
-        if (field != null)
-            return (T)field.GetValue(this);
+        if (field.field != null)
+            return (T)field.field.GetValue(this);
 
         return (T)default;
     }

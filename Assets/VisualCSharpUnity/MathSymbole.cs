@@ -3,10 +3,10 @@ using System.Collections;
 
 public class MathSymbole : Symbole
 {
-    [Input(0,1,0,1)] public int A;
-    [Input(0, 1, 0, 1)] public int B;
+    [Input(0,1,0,1)] public double A;
+    [Input(0, 1, 0, 1)] public double B;
 
-    [Output(1, 0.96f, 0.016f, 1,ValueProp.Hide)] public int Result;
+    [Output(1, 0, 0, 1,ValueProp.Hide)] public double Result;
 
     public MathType m_mathType = MathType.Add;
     public enum MathType { Divide, Multiply, Add, Subtract }
@@ -19,8 +19,8 @@ public class MathSymbole : Symbole
 
     public override object GetValue(ConnectionPoint point)
     {
-        int a = GetInputValue<int>("A");
-        int b = GetInputValue<int>("B");
+        double a = GetInputValue<double>("A");
+        double b = GetInputValue<double>("B");
         // After you've gotten your input values, you can perform your calculations and return a value
         if (point.name == "Result")
             switch (m_mathType)

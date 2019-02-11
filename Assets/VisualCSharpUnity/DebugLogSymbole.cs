@@ -3,7 +3,7 @@ using UnityEditor;
 
 public class DebugLogSymbole : Symbole
 {
-    [Input(0, 1, 0, 1)] public int A;
+    [Input(1, 1, 0, 1,ValueProp.Hide)] public object A;
 
     public DebugLogType m_debugLogType = DebugLogType.Log;
     public enum DebugLogType { Log, Multiply, Add, Subtract }
@@ -21,7 +21,7 @@ public class DebugLogSymbole : Symbole
             switch (m_debugLogType)
             {
                 case DebugLogType.Log:
-                    int a = GetInputValue<int>("A");
+                    object a = GetInputValue<object>("A");
                     Debug.Log(a);
                     break;
             }

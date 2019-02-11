@@ -16,6 +16,13 @@ public static class LoadResources
                 return null;
             textureLibrary[name] = tex;
         }
+        if (!textureLibrary[name])
+        {
+            var tex = LoadTexture(name);
+            if (!tex)
+                return null;
+            textureLibrary[name] = tex;
+        }
         return textureLibrary[name];
     }
 
@@ -28,6 +35,13 @@ public static class LoadResources
             if (!tex)
                 return null;
             textureLibrary[key] = PaintColor(tex,color);
+        }
+        if (!textureLibrary[key])
+        {
+            var tex = GetTexture(name);
+            if (!tex)
+                return null;
+            textureLibrary[key] = PaintColor(tex, color);
         }
         return textureLibrary[key];
     }

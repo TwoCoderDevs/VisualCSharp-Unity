@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 98fa80c6fc3f3134eb20427820ab2916
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - m_PersistentViewDataDictionary: {instanceID: 0}
+  - _gridTex: {fileID: 2800000, guid: f79ba6f1efb468f429fd2b0cbff651de, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

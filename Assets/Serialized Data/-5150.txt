@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfXmlKeyValuePairOfStringVariableTest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <XmlKeyValuePairOfStringVariableTest>
+    <Key>1</Key>
+    <Value>
+      <name>1</name>
+      <variableType>Int32</variableType>
+      <value xsi:type="xsd:int">1212</value>
+    </Value>
+  </XmlKeyValuePairOfStringVariableTest>
+  <XmlKeyValuePairOfStringVariableTest>
+    <Key>2</Key>
+    <Value>
+      <name>2</name>
+      <variableType>Single</variableType>
+      <value xsi:type="xsd:float">1212.12122</value>
+    </Value>
+  </XmlKeyValuePairOfStringVariableTest>
+</ArrayOfXmlKeyValuePairOfStringVariableTest>
