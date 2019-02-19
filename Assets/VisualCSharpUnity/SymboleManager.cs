@@ -511,7 +511,8 @@ public class SymboleManager
 
     public void AddNewSymbole(Type symboleType, Vector2 mousePosition)
     {
-        selections.Clear();
+        if (selections != null && selections.Count > 0)
+            selections.Clear();
         mousePosition = few.InvGraphToScreenSpace(mousePosition);
         if (symboles == null)
         {
