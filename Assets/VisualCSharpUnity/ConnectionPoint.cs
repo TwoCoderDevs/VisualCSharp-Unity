@@ -3,10 +3,9 @@ using UnityEditor;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.ObjectSerializer;
 
-public enum ConnectionType { Input, Output}
-public enum ValueProp { Show, Hide}
+public enum ConnectionType { Input, Output, Call, Receive}
+public enum ValueProp { Show, Name, Hide, }
 public class ConnectionPoint : ScriptableObject
 {
     public Color knobeColor;
@@ -16,10 +15,24 @@ public class ConnectionPoint : ScriptableObject
     public Symbole symbole;
     private Rect PointSize;
     private GUIStyle OutputStyle;
-    public List<ConnectionPoint> Connections { get; private set; }
+    public List<ConnectionPoint> Connections;
     public Texture2D tex;
     public Texture2D hasCon;
     public Texture2D noCon;
+
+    public void OnEnable()
+    {
+        if (Connections == null)
+            Connections = new List<ConnectionPoint>();
+        OutputStyle = new GUIStyle();
+        OutputStyle.alignment = TextAnchor.MiddleRight;
+        if (name.Contains("(Clone)"))
+        {
+            var i = name.IndexOf("(Clone)");
+            name = name.Remove(i);
+        }
+    }
+
     public void AddConnection(ConnectionPoint connectionPoint)
     {
         if (!Connections.Contains(connectionPoint))
@@ -69,15 +82,24 @@ public class ConnectionPoint : ScriptableObject
     public T GetValue<T>()
     {
         if (field != null)
+        {
             return (T)field.GetValue(symbole);
+        }
 
         return (T)default;
+    }
+
+    public void Set()
+    {
+        symbole.GUIGetValue(this);
     }
 
     public void SetValue(object value)
     {
         if (field != null)
+        {
             field.SetValue(symbole, value);
+        }
     }
 
     public static void GetInputValue()
@@ -189,7 +211,7 @@ public class ConnectionPoint : ScriptableObject
                 //
                 
             }
-        if (valueProp == ValueProp.Hide)
+        if (valueProp == ValueProp.Name)
         {
             EditorGUILayout.LabelField(name, OutputStyle, GUILayout.Width(symbole.NodeSize.width - 13));
         }
@@ -207,121 +229,5 @@ public class ConnectionPoint : ScriptableObject
             tex = noCon;
         GUI.DrawTexture(PointSize, tex);
         SetCenter();
-    }
-}
-
-public static class GUIExtended
-{
-    private static T GetValue<T>(object value)
-    {
-        if (value != null)
-        {
-            if (typeof(T) != value.GetType())
-                return Activator.CreateInstance<T>();
-            return (T)value;
-        }
-        else
-            return Activator.CreateInstance<T>();
-    }
-
-    private static Tuple<bool, object> SetValue(object value, object last)
-    {
-        if (value != null && value != last)
-            return new Tuple<bool, object>(true, value);
-
-        return new Tuple<bool, object>(false, last);
-    }
-
-    public static Tuple<bool, object> DrawGUISwitch(string type, object value)
-    {
-        var tmp = value;
-        switch (type)
-        {
-            case "AnimationCurve":
-                return SetValue(EditorGUILayout.CurveField( GetValue<AnimationCurve>(value)), tmp);
-
-            case "Bounds":
-                return SetValue(EditorGUILayout.BoundsField( GetValue<Bounds>(value)), tmp);
-
-            case "BoundsInt":
-                return SetValue(EditorGUILayout.BoundsIntField( GetValue<BoundsInt>(value)), tmp);
-
-            case "Color":
-                return SetValue(EditorGUILayout.ColorField( GetValue<Color>(value)), tmp);
-
-            case "Color32":
-                return SetValue(EditorGUILayout.ColorField( GetValue<Color32>(value)), tmp);
-
-            case "Double":
-                return SetValue(EditorGUILayout.DoubleField( GetValue<double>(value)), tmp);
-
-            case "Enum":
-                return SetValue(EditorGUILayout.EnumPopup( GetValue<Enum>(value)), tmp);
-
-            case "Single":
-                return SetValue(EditorGUILayout.FloatField( GetValue<float>(value)), tmp);
-
-            case "Gradient":
-                return SetValue(EditorGUILayout.GradientField( GetValue<Gradient>(value)), tmp);
-
-            case "Object":
-                return SetValue(EditorGUILayout.ObjectField( GetValue<UnityEngine.Object>(value), typeof(UnityEngine.Object), true), tmp);
-
-            case "Rect":
-                return SetValue(EditorGUILayout.RectField( GetValue<Rect>(value)), tmp);
-
-            case "RectInt":
-                return SetValue(EditorGUILayout.RectIntField( GetValue<RectInt>(value)), tmp);
-
-            case "String":
-                return SetValue(EditorGUILayout.TextField( GetValue<string>(value)), tmp);
-
-            case "Boolean":
-                return SetValue(EditorGUILayout.Toggle( GetValue<bool>(value)), tmp);
-
-            case "Vector2":
-                return SetValue(EditorGUILayout.Vector2Field("", GetValue<Vector2>(value)), tmp);
-
-            case "Vector2Int":
-                return SetValue(EditorGUILayout.Vector2IntField("", GetValue<Vector2Int>(value)), tmp);
-
-            case "Vector3":
-                return SetValue(EditorGUILayout.Vector3Field("", GetValue<Vector3>(value)), tmp);
-
-            case "Vector3Int":
-                return SetValue(EditorGUILayout.Vector3IntField("", GetValue<Vector3Int>(value)), tmp);
-
-            case "Vector4":
-                return SetValue(EditorGUILayout.Vector4Field("", GetValue<Vector4>(value)), tmp);
-
-            case "Quaternion":
-                return SetValue(EditorGUILayout.Vector4Field("", GetValue<Quaternion>(value).GetVector4()).GetQuaternion(), tmp);
-
-            //All Integer Types
-            case "Byte":
-            case "Int16":
-            case "Int32":
-            case "SByte":
-            case "UInt16":
-            case "UInt32":
-                return SetValue(EditorGUILayout.IntField( GetValue<int>(value)), tmp);
-
-            case "UInt64":
-            case "Int64":
-                return SetValue(EditorGUILayout.LongField( GetValue<long>(value)), tmp);
-
-                //
-        }
-        return new Tuple<bool, object>(false, value);
-    }
-
-public static Vector4 GetVector4(this Quaternion quaternion)
-    {
-        return new Vector4(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
-    }
-
-    public static Quaternion GetQuaternion(this Vector4 vector4)
-    {
-        return new Quaternion(vector4.x, vector4.y, vector4.z, vector4.w);
     }
 }

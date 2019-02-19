@@ -167,6 +167,7 @@ public class EventManager
                     {
                         point.AddConnection(symboleManager.selectedInputPoint);
                         symboleManager.selectedInputPoint.AddConnection(point);
+                        SymboleManager.selections.Clear();
                     }
                 symboleManager.selectedInputPoint = null;
                 symboleManager.selectedOutputPoint = null;

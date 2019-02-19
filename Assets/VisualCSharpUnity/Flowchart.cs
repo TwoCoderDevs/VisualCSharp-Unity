@@ -93,7 +93,7 @@ public class Variable
 public class Flowchart : MonoBehaviour
 {
     public VCSUGraph graph;
-    public XmlDictionary<string, VariableTest> variables { get { return graph.variables; } set { graph.variables = value; } }
+    public XmlDictionary<string, VariableTest> variables { get { if (graph) return graph.variables; return null; } set { graph.variables = value; } }
     // Use this for initialization
     void Start()
     {

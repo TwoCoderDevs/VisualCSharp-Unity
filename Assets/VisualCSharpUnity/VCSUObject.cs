@@ -1,185 +1,114 @@
 ﻿using System;
-using UnityEditor;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml.Serialization;
 using UnityEngine;
+using UnityEditor;
 
 [Serializable]
 public class VCSUObject
 {
-}
-[Serializable]
-public class VCSUInt : VCSUObject
-{
-    [SerializeField]
-    private int Integer = 0;
+    public string objectName;
+    public bool isInScene { get { return SceneID != 0; } }
+    public string Path;
+    public long SceneID;
+    public int TempID;
 
-    public VCSUInt(int Integer)
+    public static VCSUGraph Clone(VCSUGraph graph)
     {
-        this.Integer = Integer;
+        var clone = ScriptableObject.CreateInstance<VCSUGraph>();
+        if(graph.symboles != null)
+        {
+            clone.symboles = new List<Symbole>();
+
+            foreach (var symbole in graph.symboles)
+            {
+                var tmp = UnityEngine.Object.Instantiate(symbole);
+                tmp.fieldPoints.Clear();
+                clone.symboles.Add(tmp);
+            }
+
+            if (graph.connectionPoints != null)
+            {
+                clone.connectionPoints = graph.connectionPoints.Select(x => UnityEngine.Object.Instantiate(x)).ToList();
+                List<int> indexs = new List<int>();
+                foreach (var point in clone.connectionPoints)
+                {
+                    var sIndex = graph.symboles.IndexOf(point.symbole);
+                    var pIndex = clone.connectionPoints.IndexOf(point);
+                    point.symbole = clone.symboles[sIndex];
+                    if (graph.connectionPoints[pIndex].Connections != null && graph.connectionPoints[pIndex].Connections.Count > 0)
+                    {
+                        indexs = graph.connectionPoints[pIndex].Connections.Select(x => graph.connectionPoints.IndexOf(x)).ToList();
+                        point.Connections.Clear();
+                        foreach (var index in indexs)
+                        {
+                            point.AddConnection(clone.connectionPoints[index]);
+                        }
+                    }
+                    point.symbole.fieldPoints.Add(point);
+                }
+            }
+            clone.variables = graph.variables;
+            SerializeData(clone);
+            clone.OriginalIID = graph.GetInstanceID();
+            clone.OriginalPath = AssetDatabase.GetAssetOrScenePath(clone);
+        }
+        return clone;
     }
 
-    public static implicit operator VCSUInt (int Integer)
+    private static void SerializeData(VCSUGraph graph)
     {
-        return new VCSUInt(Integer);
-    }
-    public static implicit operator int(VCSUInt Integer)
-    {
-        return Integer.Integer;
-    }
-}
-[Serializable]
-public class VCSUAnimationCurve : VCSUObject
-{
-    [SerializeField]
-    public AnimationCurve AnimationCurve;
-
-    public VCSUAnimationCurve(AnimationCurve AnimationCurve)
-    {
-        if (AnimationCurve == null)
-            AnimationCurve = new AnimationCurve();
-        this.AnimationCurve = AnimationCurve;
+        XmlSerializer xmlSerializer = new XmlSerializer(typeof(XmlDictionary<string, VariableTest>));
+        using (StringWriter writer = new StringWriter())
+        {
+            xmlSerializer.Serialize(writer, graph.variables);
+            graph.XmlData = writer.ToString();
+        }
+        EditorUtility.SetDirty(graph);
+        AssetDatabase.SaveAssets();
     }
 
-    public VCSUAnimationCurve()
+    public static void ApplyFromClone(VCSUGraph graph, VCSUGraph OriginalGraph)
     {
-        AnimationCurve = new AnimationCurve();
-    }
+        if (graph.symboles != null)
+        {
+            OriginalGraph.symboles = new List<Symbole>();
 
-    public static implicit operator VCSUAnimationCurve(AnimationCurve AnimationCurve)
-    {
-        if (AnimationCurve == null)
-            AnimationCurve = new AnimationCurve();
-        return new VCSUAnimationCurve(AnimationCurve);
-    }
-    public static implicit operator AnimationCurve(VCSUAnimationCurve AnimationCurve)
-    {
-        if (AnimationCurve.AnimationCurve == null)
-            AnimationCurve.AnimationCurve = new AnimationCurve();
-        return AnimationCurve.AnimationCurve;
-    }
-}
+            OriginalGraph.symboles.Clear();
+            foreach (var symbole in graph.symboles)
+            {
+                var tmp = UnityEngine.Object.Instantiate(symbole);
+                tmp.fieldPoints.Clear();
+                OriginalGraph.symboles.Add(tmp);
+            }
 
-[CustomPropertyDrawer(typeof(VCSUAnimationCurve))]
-public class VCSUAnimationCurveDrawer : PropertyDrawer
-{
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-    {
-        property.FindPropertyRelative("AnimationCurve").animationCurveValue = EditorGUI.CurveField(position, property.FindPropertyRelative("AnimationCurve").animationCurveValue);
-        //base.OnGUI(position, property, label);
-    }
-}
-
-/*public class VCSUObject
-{
-    private Type AssignedType;
-    private object AssignedObject = new object();
-
-    public new Type GetType()
-    {
-        return AssignedType;
-    }
-
-    public VCSUObject(UnityEngine.Object obj, Type type)
-    {
-        this.AssignedObject = obj;
-        this.AssignedType = type;
-    }
-
-    public VCSUObject(Func<object> obj)
-    {
-        this.AssignedObject = obj();
-        this.AssignedType = obj().GetType();
-    }
-
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public static implicit operator VCSUObject(UnityEngine.Object type)
-    {
-        return new VCSUObject(type, type.GetType());
-    }
-
-    public static implicit operator UnityEngine.Object(VCSUObject VObject)
-    {
-        return (UnityEngine.Object)VObject.AssignedObject;
-    }
-
-    public static implicit operator VCSUObject(int VObject)
-    {
-        return new VCSUObject(() => VObject);
-    }
-
-    public static implicit operator VCSUObject(string VObject)
-    {
-        return new VCSUObject(() => VObject);
-    }
-
-    public static implicit operator VCSUObject(long VObject)
-    {
-        return new VCSUObject(() => VObject);
-    }
-
-    public static implicit operator VCSUObject(double VObject)
-    {
-        return new VCSUObject(() => VObject);
-    }
-
-    public static implicit operator VCSUObject(Single VObject)
-    {
-        return new VCSUObject(() => VObject);
-    }
-
-    public static implicit operator int(VCSUObject VObject)
-    {
-        return (int)VObject.AssignedObject;
-    }
-
-    public static implicit operator string(VCSUObject VObject)
-    {
-        return (string)VObject.AssignedObject;
-    }
-
-    public static implicit operator long(VCSUObject VObject)
-    {
-        return (long)VObject.AssignedObject;
-    }
-
-    public static implicit operator double(VCSUObject VObject)
-    {
-        return (double)VObject.AssignedObject;
-    }
-
-    public static implicit operator Single(VCSUObject VObject)
-    {
-        return (Single)VObject.AssignedObject;
-    }
-
-    public static implicit operator VCSUObject(Rect VObject)
-    {
-        return new VCSUObject(() => VObject);
-    }
-
-    public static implicit operator Rect(VCSUObject VObject)
-    {
-        return (Rect)VObject.AssignedObject;
-    }
-
-    public static implicit operator VCSUObject(AnimationCurve VObject)
-    {
-        return new VCSUObject(() => VObject);
-    }
-
-    public static implicit operator AnimationCurve(VCSUObject VObject)
-    {
-        return (AnimationCurve)VObject.AssignedObject;
+            if (graph.connectionPoints != null)
+            {
+                OriginalGraph.connectionPoints.Clear();
+                OriginalGraph.connectionPoints = graph.connectionPoints.Select(x => UnityEngine.Object.Instantiate(x)).ToList();
+                List<int> indexs = new List<int>();
+                foreach (var point in OriginalGraph.connectionPoints)
+                {
+                    var sIndex = graph.symboles.IndexOf(point.symbole);
+                    var pIndex = OriginalGraph.connectionPoints.IndexOf(point);
+                    point.symbole = OriginalGraph.symboles[sIndex];
+                    Debug.Log(graph.connectionPoints[pIndex].Connections != null && graph.connectionPoints[pIndex].Connections.Count > 0);
+                    if (graph.connectionPoints[pIndex].Connections != null && graph.connectionPoints[pIndex].Connections.Count > 0)
+                    {
+                        indexs = graph.connectionPoints[pIndex].Connections.Select(x => graph.connectionPoints.IndexOf(x)).ToList();
+                        point.Connections.Clear();
+                        foreach (var index in indexs)
+                        {
+                            point.AddConnection(OriginalGraph.connectionPoints[index]);
+                        }
+                    }
+                    point.symbole.fieldPoints.Add(point);
+                }
+            }
+            OriginalGraph.variables = graph.variables;
+            SerializeData(OriginalGraph);
+        }
     }
 }
-*/

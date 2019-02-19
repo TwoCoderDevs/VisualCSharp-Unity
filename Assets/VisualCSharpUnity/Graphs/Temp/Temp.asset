@@ -1,0 +1,1343 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cea50eeaa729c7d4c9ff21acc1e78e67, type: 3}
+  m_Name: Temp
+  m_EditorClassIdentifier: 
+  symboles:
+  - {fileID: 114024610211009742}
+  - {fileID: 114811974469741140}
+  - {fileID: 114211596931010936}
+  - {fileID: 114492338990279010}
+  - {fileID: 114272162643857462}
+  - {fileID: 114793630890299122}
+  - {fileID: 114963118602119186}
+  - {fileID: 114164099726512426}
+  - {fileID: 114500204538032282}
+  - {fileID: 114378841072036298}
+  - {fileID: 114984416028911786}
+  - {fileID: 114309532359488738}
+  connectionPoints:
+  - {fileID: 114974361390601854}
+  - {fileID: 114517218624357416}
+  - {fileID: 114761349656496892}
+  - {fileID: 114257503948262470}
+  - {fileID: 114264741224743198}
+  - {fileID: 114839826889865962}
+  - {fileID: 114014235632400404}
+  - {fileID: 114873366331205408}
+  - {fileID: 114136365053805016}
+  - {fileID: 114247921807181584}
+  - {fileID: 114225577394354330}
+  - {fileID: 114417018610685098}
+  - {fileID: 114800364087391856}
+  - {fileID: 114764631153603538}
+  - {fileID: 114079612392491096}
+  - {fileID: 114827966305371392}
+  - {fileID: 114190505702585614}
+  - {fileID: 114169666072065092}
+  - {fileID: 114652904198125882}
+  - {fileID: 114878747580418718}
+  - {fileID: 114622140523151990}
+  - {fileID: 114079444269215236}
+  - {fileID: 114333392574378778}
+  - {fileID: 114701117042569016}
+  - {fileID: 114363314980995486}
+  - {fileID: 114009385702375008}
+  - {fileID: 114702447225621986}
+  - {fileID: 114850838981218580}
+  - {fileID: 114454835533731450}
+  - {fileID: 114580165637724552}
+  callPoints: []
+  XmlData: "<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfXmlKeyValuePairOfStringVariableTest
+    xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n
+    \ <XmlKeyValuePairOfStringVariableTest>\r\n    <Key>bad</Key>\r\n    <Value>\r\n
+    \     <name>bad</name>\r\n      <variableType>Double</variableType>\r\n      <value
+    xsi:type=\"xsd:double\">125</value>\r\n    </Value>\r\n  </XmlKeyValuePairOfStringVariableTest>\r\n
+    \ <XmlKeyValuePairOfStringVariableTest>\r\n    <Key>good</Key>\r\n    <Value>\r\n
+    \     <name>good</name>\r\n      <variableType>Single</variableType>\r\n      <value
+    xsi:type=\"xsd:float\">521</value>\r\n    </Value>\r\n  </XmlKeyValuePairOfStringVariableTest>\r\n</ArrayOfXmlKeyValuePairOfStringVariableTest>"
+  OriginalIID: 0
+  OriginalPath: 
+--- !u!114 &114009385702375008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: A
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 1, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 2
+  symbole: {fileID: 114378841072036298}
+  Connections:
+  - {fileID: 114454835533731450}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 524
+    y: 116
+    width: 10
+    height: 10
+--- !u!114 &114014235632400404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: A
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 0
+  symbole: {fileID: 114211596931010936}
+  Connections:
+  - {fileID: 114761349656496892}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 300.8
+    y: 234
+    width: 10
+    height: 10
+--- !u!114 &114024610211009742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498226f8049b67c46956d8f9b99e5204, type: 3}
+  m_Name: MathSymbole
+  m_EditorClassIdentifier: 
+  Receive: {fileID: 0}
+  Call: {fileID: 0}
+  shouldCall: 0
+  shouldReceive: 0
+  NodeSize:
+    serializedVersion: 2
+    x: 73.8
+    y: 137
+    width: 150
+    height: 113
+  fieldPoints:
+  - {fileID: 114974361390601854}
+  - {fileID: 114517218624357416}
+  - {fileID: 114761349656496892}
+  childFields:
+  - name: m_mathType
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: Receive
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: shouldReceive
+    isVariableEnum: 0
+    isEnumLable: 0
+  NoOutput: 0
+  A: 37.66
+  B: 38.06999999999999
+  Result: 75.72999999999999
+  m_mathType: 2
+--- !u!114 &114079444269215236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: B
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 0
+  symbole: {fileID: 114164099726512426}
+  Connections: []
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: -144.91235
+    y: 30.307001
+    width: 10
+    height: 10
+--- !u!114 &114079612392491096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: A
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 0
+  symbole: {fileID: 114793630890299122}
+  Connections: []
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: -74.77782
+    y: 350.80298
+    width: 10
+    height: 10
+--- !u!114 &114136365053805016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: Result
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 1, g: 0, b: 0, a: 1}
+  connectionType: 1
+  valueProp: 1
+  symbole: {fileID: 114211596931010936}
+  Connections:
+  - {fileID: 114580165637724552}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 451.8
+    y: 270
+    width: 10
+    height: 10
+--- !u!114 &114164099726512426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498226f8049b67c46956d8f9b99e5204, type: 3}
+  m_Name: MathSymbole
+  m_EditorClassIdentifier: 
+  Receive: {fileID: 0}
+  Call: {fileID: 0}
+  shouldCall: 0
+  shouldReceive: 0
+  NodeSize:
+    serializedVersion: 2
+    x: -138.91235
+    y: -25.692999
+    width: 150
+    height: 113
+  fieldPoints:
+  - {fileID: 114622140523151990}
+  - {fileID: 114079444269215236}
+  - {fileID: 114333392574378778}
+  childFields:
+  - name: m_mathType
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: Receive
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: shouldReceive
+    isVariableEnum: 0
+    isEnumLable: 0
+  NoOutput: 0
+  A: 19.05
+  B: 18.61
+  Result: 37.66
+  m_mathType: 2
+--- !u!114 &114169666072065092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: A
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 0
+  symbole: {fileID: 114963118602119186}
+  Connections: []
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: -146.8408
+    y: 129.943
+    width: 10
+    height: 10
+--- !u!114 &114190505702585614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: Result
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 1, g: 0, b: 0, a: 1}
+  connectionType: 1
+  valueProp: 1
+  symbole: {fileID: 114793630890299122}
+  Connections:
+  - {fileID: 114264741224743198}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 76.22218
+    y: 386.80298
+    width: 10
+    height: 10
+--- !u!114 &114211596931010936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498226f8049b67c46956d8f9b99e5204, type: 3}
+  m_Name: MathSymbole
+  m_EditorClassIdentifier: 
+  Receive: {fileID: 0}
+  Call: {fileID: 0}
+  shouldCall: 0
+  shouldReceive: 0
+  NodeSize:
+    serializedVersion: 2
+    x: 306.8
+    y: 196
+    width: 150
+    height: 113
+  fieldPoints:
+  - {fileID: 114014235632400404}
+  - {fileID: 114873366331205408}
+  - {fileID: 114136365053805016}
+  childFields:
+  - name: m_mathType
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: Receive
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: shouldReceive
+    isVariableEnum: 0
+    isEnumLable: 0
+  NoOutput: 0
+  A: 75.72999999999999
+  B: 30.36
+  Result: 106.08999999999999
+  m_mathType: 2
+--- !u!114 &114225577394354330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: Value
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 1
+  valueProp: 2
+  symbole: {fileID: 114492338990279010}
+  Connections:
+  - {fileID: 114850838981218580}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 230
+    y: 116
+    width: 10
+    height: 10
+--- !u!114 &114247921807181584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: Name
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 2
+  symbole: {fileID: 114492338990279010}
+  Connections: []
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 69
+    y: 116
+    width: 10
+    height: 10
+--- !u!114 &114257503948262470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: A
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 0
+  symbole: {fileID: 114811974469741140}
+  Connections:
+  - {fileID: 114764631153603538}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 115.8
+    y: 290
+    width: 10
+    height: 10
+--- !u!114 &114264741224743198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: B
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 0
+  symbole: {fileID: 114811974469741140}
+  Connections:
+  - {fileID: 114190505702585614}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 115.8
+    y: 308
+    width: 10
+    height: 10
+--- !u!114 &114272162643857462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498226f8049b67c46956d8f9b99e5204, type: 3}
+  m_Name: MathSymbole
+  m_EditorClassIdentifier: 
+  Receive: {fileID: 0}
+  Call: {fileID: 0}
+  shouldCall: 0
+  shouldReceive: 0
+  NodeSize:
+    serializedVersion: 2
+    x: -83.00151
+    y: 202.11772
+    width: 150
+    height: 113
+  fieldPoints:
+  - {fileID: 114417018610685098}
+  - {fileID: 114800364087391856}
+  - {fileID: 114764631153603538}
+  childFields:
+  - name: m_mathType
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: Receive
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: shouldReceive
+    isVariableEnum: 0
+    isEnumLable: 0
+  NoOutput: 0
+  A: 0.57
+  B: 15.58
+  Result: 16.15
+  m_mathType: 2
+--- !u!114 &114309532359488738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aa59441305f15d4ca949b4f487c30ef, type: 3}
+  m_Name: DebugLogSymbole
+  m_EditorClassIdentifier: 
+  Receive: {fileID: 0}
+  Call: {fileID: 0}
+  shouldCall: 1
+  shouldReceive: 1
+  NodeSize:
+    serializedVersion: 2
+    x: 591
+    y: 204
+    width: 150
+    height: 61
+  fieldPoints:
+  - {fileID: 114580165637724552}
+  childFields:
+  - name: m_debugLogType
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: Receive
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: shouldReceive
+    isVariableEnum: 0
+    isEnumLable: 0
+  NoOutput: 1
+  m_debugLogType: 0
+--- !u!114 &114333392574378778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: Result
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 1, g: 0, b: 0, a: 1}
+  connectionType: 1
+  valueProp: 1
+  symbole: {fileID: 114164099726512426}
+  Connections:
+  - {fileID: 114974361390601854}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 6.0876465
+    y: 48.307
+    width: 10
+    height: 10
+--- !u!114 &114363314980995486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: Value
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 1
+  valueProp: 2
+  symbole: {fileID: 114500204538032282}
+  Connections:
+  - {fileID: 114702447225621986}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 229
+    y: 56
+    width: 10
+    height: 10
+--- !u!114 &114378841072036298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aa59441305f15d4ca949b4f487c30ef, type: 3}
+  m_Name: DebugLogSymbole
+  m_EditorClassIdentifier: 
+  Receive: {fileID: 0}
+  Call: {fileID: 0}
+  shouldCall: 1
+  shouldReceive: 1
+  NodeSize:
+    serializedVersion: 2
+    x: 530
+    y: 78
+    width: 150
+    height: 61
+  fieldPoints:
+  - {fileID: 114009385702375008}
+  childFields:
+  - name: m_debugLogType
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: Receive
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: shouldReceive
+    isVariableEnum: 0
+    isEnumLable: 0
+  NoOutput: 1
+  m_debugLogType: 0
+--- !u!114 &114417018610685098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: A
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 0
+  symbole: {fileID: 114272162643857462}
+  Connections: []
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: -89.00151
+    y: 240.11772
+    width: 10
+    height: 10
+--- !u!114 &114454835533731450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: Result
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 1, g: 0, b: 0, a: 1}
+  connectionType: 1
+  valueProp: 1
+  symbole: {fileID: 114984416028911786}
+  Connections:
+  - {fileID: 114009385702375008}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 427
+    y: 105
+    width: 10
+    height: 10
+--- !u!114 &114492338990279010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7143dde142f3db248864c05eb0a6a48b, type: 3}
+  m_Name: GetVariableSymbole
+  m_EditorClassIdentifier: 
+  Receive: {fileID: 0}
+  Call: {fileID: 0}
+  shouldCall: 0
+  shouldReceive: 0
+  NodeSize:
+    serializedVersion: 2
+    x: 75
+    y: 78
+    width: 160
+    height: 61
+  fieldPoints:
+  - {fileID: 114247921807181584}
+  - {fileID: 114225577394354330}
+  childFields:
+  - name: Receive
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: shouldReceive
+    isVariableEnum: 0
+    isEnumLable: 0
+  NoOutput: 0
+  Variable:
+    name: good
+    variableType: 7
+  Name: good
+--- !u!114 &114500204538032282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7143dde142f3db248864c05eb0a6a48b, type: 3}
+  m_Name: GetVariableSymbole
+  m_EditorClassIdentifier: 
+  Receive: {fileID: 0}
+  Call: {fileID: 0}
+  shouldCall: 0
+  shouldReceive: 0
+  NodeSize:
+    serializedVersion: 2
+    x: 74
+    y: 18
+    width: 160
+    height: 61
+  fieldPoints:
+  - {fileID: 114701117042569016}
+  - {fileID: 114363314980995486}
+  childFields:
+  - name: Receive
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: shouldReceive
+    isVariableEnum: 0
+    isEnumLable: 0
+  NoOutput: 0
+  Variable:
+    name: bad
+    variableType: 5
+  Name: bad
+--- !u!114 &114517218624357416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: B
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 0
+  symbole: {fileID: 114024610211009742}
+  Connections:
+  - {fileID: 114878747580418718}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 67.8
+    y: 193
+    width: 10
+    height: 10
+--- !u!114 &114580165637724552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: A
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 1, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 2
+  symbole: {fileID: 114309532359488738}
+  Connections:
+  - {fileID: 114136365053805016}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 585
+    y: 242
+    width: 10
+    height: 10
+--- !u!114 &114622140523151990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: A
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 0
+  symbole: {fileID: 114164099726512426}
+  Connections: []
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: -144.91235
+    y: 12.307001
+    width: 10
+    height: 10
+--- !u!114 &114652904198125882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: B
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 0
+  symbole: {fileID: 114963118602119186}
+  Connections: []
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: -146.8408
+    y: 147.943
+    width: 10
+    height: 10
+--- !u!114 &114701117042569016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: Name
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 2
+  symbole: {fileID: 114500204538032282}
+  Connections: []
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 68
+    y: 56
+    width: 10
+    height: 10
+--- !u!114 &114702447225621986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: A
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 0
+  symbole: {fileID: 114984416028911786}
+  Connections:
+  - {fileID: 114363314980995486}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 276
+    y: 69
+    width: 10
+    height: 10
+--- !u!114 &114761349656496892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: Result
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 1, g: 0, b: 0, a: 1}
+  connectionType: 1
+  valueProp: 1
+  symbole: {fileID: 114024610211009742}
+  Connections:
+  - {fileID: 114014235632400404}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 218.8
+    y: 211
+    width: 10
+    height: 10
+--- !u!114 &114764631153603538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: Result
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 1, g: 0, b: 0, a: 1}
+  connectionType: 1
+  valueProp: 1
+  symbole: {fileID: 114272162643857462}
+  Connections:
+  - {fileID: 114257503948262470}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 61.99849
+    y: 276.11774
+    width: 10
+    height: 10
+--- !u!114 &114793630890299122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498226f8049b67c46956d8f9b99e5204, type: 3}
+  m_Name: MathSymbole
+  m_EditorClassIdentifier: 
+  Receive: {fileID: 0}
+  Call: {fileID: 0}
+  shouldCall: 0
+  shouldReceive: 0
+  NodeSize:
+    serializedVersion: 2
+    x: -68.77782
+    y: 312.80298
+    width: 150
+    height: 113
+  fieldPoints:
+  - {fileID: 114079612392491096}
+  - {fileID: 114827966305371392}
+  - {fileID: 114190505702585614}
+  childFields:
+  - name: m_mathType
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: Receive
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: shouldReceive
+    isVariableEnum: 0
+    isEnumLable: 0
+  NoOutput: 0
+  A: 11.38
+  B: 2.83
+  Result: 14.21
+  m_mathType: 2
+--- !u!114 &114800364087391856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: B
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 0
+  symbole: {fileID: 114272162643857462}
+  Connections: []
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: -89.00151
+    y: 258.11774
+    width: 10
+    height: 10
+--- !u!114 &114811974469741140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498226f8049b67c46956d8f9b99e5204, type: 3}
+  m_Name: MathSymbole
+  m_EditorClassIdentifier: 
+  Receive: {fileID: 0}
+  Call: {fileID: 0}
+  shouldCall: 0
+  shouldReceive: 0
+  NodeSize:
+    serializedVersion: 2
+    x: 121.8
+    y: 252
+    width: 150
+    height: 113
+  fieldPoints:
+  - {fileID: 114257503948262470}
+  - {fileID: 114264741224743198}
+  - {fileID: 114839826889865962}
+  childFields:
+  - name: m_mathType
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: Receive
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: shouldReceive
+    isVariableEnum: 0
+    isEnumLable: 0
+  NoOutput: 0
+  A: 16.15
+  B: 14.21
+  Result: 30.36
+  m_mathType: 2
+--- !u!114 &114827966305371392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: B
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 0
+  symbole: {fileID: 114793630890299122}
+  Connections: []
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: -74.77782
+    y: 368.80298
+    width: 10
+    height: 10
+--- !u!114 &114839826889865962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: Result
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 1, g: 0, b: 0, a: 1}
+  connectionType: 1
+  valueProp: 1
+  symbole: {fileID: 114811974469741140}
+  Connections:
+  - {fileID: 114873366331205408}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 266.8
+    y: 326
+    width: 10
+    height: 10
+--- !u!114 &114850838981218580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: B
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 0
+  symbole: {fileID: 114984416028911786}
+  Connections:
+  - {fileID: 114225577394354330}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 276
+    y: 87
+    width: 10
+    height: 10
+--- !u!114 &114873366331205408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: B
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 0
+  symbole: {fileID: 114211596931010936}
+  Connections:
+  - {fileID: 114839826889865962}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 300.8
+    y: 252
+    width: 10
+    height: 10
+--- !u!114 &114878747580418718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: Result
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 1, g: 0, b: 0, a: 1}
+  connectionType: 1
+  valueProp: 1
+  symbole: {fileID: 114963118602119186}
+  Connections:
+  - {fileID: 114517218624357416}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 4.159195
+    y: 165.943
+    width: 10
+    height: 10
+--- !u!114 &114963118602119186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498226f8049b67c46956d8f9b99e5204, type: 3}
+  m_Name: MathSymbole
+  m_EditorClassIdentifier: 
+  Receive: {fileID: 0}
+  Call: {fileID: 0}
+  shouldCall: 0
+  shouldReceive: 0
+  NodeSize:
+    serializedVersion: 2
+    x: -140.8408
+    y: 91.943
+    width: 150
+    height: 113
+  fieldPoints:
+  - {fileID: 114169666072065092}
+  - {fileID: 114652904198125882}
+  - {fileID: 114878747580418718}
+  childFields:
+  - name: m_mathType
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: Receive
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: shouldReceive
+    isVariableEnum: 0
+    isEnumLable: 0
+  NoOutput: 0
+  A: 3.91
+  B: 34.16
+  Result: 38.06999999999999
+  m_mathType: 2
+--- !u!114 &114974361390601854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fdf6fe90f2e0488f7a18049c64fa8, type: 3}
+  m_Name: A
+  m_EditorClassIdentifier: 
+  knobeColor: {r: 0, g: 1, b: 0, a: 1}
+  connectionType: 0
+  valueProp: 0
+  symbole: {fileID: 114024610211009742}
+  Connections:
+  - {fileID: 114333392574378778}
+  tex: {fileID: 0}
+  hasCon: {fileID: 0}
+  noCon: {fileID: 0}
+  PointPos:
+    serializedVersion: 2
+    x: 67.8
+    y: 175
+    width: 10
+    height: 10
+--- !u!114 &114984416028911786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498226f8049b67c46956d8f9b99e5204, type: 3}
+  m_Name: MathSymbole
+  m_EditorClassIdentifier: 
+  Receive: {fileID: 0}
+  Call: {fileID: 0}
+  shouldCall: 0
+  shouldReceive: 0
+  NodeSize:
+    serializedVersion: 2
+    x: 282
+    y: 31
+    width: 150
+    height: 113
+  fieldPoints:
+  - {fileID: 114702447225621986}
+  - {fileID: 114850838981218580}
+  - {fileID: 114454835533731450}
+  childFields:
+  - name: m_mathType
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: Receive
+    isVariableEnum: 0
+    isEnumLable: 0
+  - name: shouldReceive
+    isVariableEnum: 0
+    isEnumLable: 0
+  NoOutput: 0
+  A: 125
+  B: 521
+  Result: 646
+  m_mathType: 2

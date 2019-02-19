@@ -6,7 +6,7 @@ public class MathSymbole : Symbole
     [Input(0,1,0,1)] public double A;
     [Input(0, 1, 0, 1)] public double B;
 
-    [Output(1, 0, 0, 1,ValueProp.Hide)] public double Result;
+    [Output(1, 0, 0, 1,ValueProp.Name)] public double Result;
 
     public MathType m_mathType = MathType.Add;
     public enum MathType { Divide, Multiply, Add, Subtract }
@@ -19,8 +19,9 @@ public class MathSymbole : Symbole
 
     public override object GetValue(ConnectionPoint point)
     {
-        double a = GetInputValue<double>("A");
-        double b = GetInputValue<double>("B");
+        SymboleManager.DrawSymbole(GetInstanceID());
+        double a = System.Convert.ToDouble(GetInputValue<object>("A"));
+        double b = System.Convert.ToDouble(GetInputValue<object>("B"));
         // After you've gotten your input values, you can perform your calculations and return a value
         if (point.name == "Result")
             switch (m_mathType)
@@ -30,6 +31,6 @@ public class MathSymbole : Symbole
                 case MathType.Add: default: return a + b;
                 case MathType.Subtract: return a - b;
             }
-        else return 0;
+        else return base.GetValue(point);
     }
 }

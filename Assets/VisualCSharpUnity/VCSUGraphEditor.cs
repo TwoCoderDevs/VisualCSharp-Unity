@@ -13,28 +13,65 @@ public class VCSUGraphDrawer : Editor
     private XmlDictionary<string, VariableTest> variables { get { return graph.variables; } set { graph.variables = value; } }
     private string TempVariable = string.Empty;
     private bool GUIChanged = false;
+    public bool disableMargin;
+    private GUIStyle TempLable()
+    {
+        var style = new GUIStyle();
+        style.alignment = TextAnchor.MiddleRight;
+        style.normal.textColor = Color.gray;
+        return style;
+    }
+    public override bool UseDefaultMargins()
+    {
+        return disableMargin;
+    }
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
+        GUILayout.BeginVertical(EditorStyles.inspectorDefaultMargins);
         if (GUILayout.Button("Open Graph"))
         {
             FlowchartEditorWindow.Init(graph);
         }
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("symboles"),true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("connectionPoints"), true);
+        GUILayout.EndVertical();
         XmlDictionary<string, VariableTest> renameds = new XmlDictionary<string, VariableTest>();
         foreach (var variable in variables)
         {
+            var frect = EditorGUILayout.BeginVertical(EditorStyles.inspectorFullWidthMargins);
+            var fboxRect = new Rect(frect.x, frect.y - 1.5f, frect.width + 1, frect.height + 2.5f);
+            GUI.Box(fboxRect, "");
+            GUI.Button(new Rect(frect.x + 5, frect.center.y - 7.5f, 20, 20), '\u003D'.ToString(), GUIStyle.none);
             var name = variable.Value.name;
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(15);
             variable.Value.name = EditorGUILayout.TextField(variable.Value.name);
+            GUILayout.EndHorizontal();
             var variableType = variable.Value.variableType;
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(15);
             variable.Value.variableType = (VariableType)EditorGUILayout.EnumPopup(variable.Value.variableType);
+            GUILayout.EndHorizontal();
             if (variableType != variable.Value.variableType)
                 GUIChanged = true;
-            var value = GUIExtended.DrawGUISwitch(variable.Value.variableType.ToString(), variable.Value.value);
-            if(value.Item1 == true)
-                GUIChanged = true;
-            variable.Value.value = value.Item2;
+            Tuple<bool, object> value = null;
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(15);
+            if (variable.Value.variableType != VariableType.Object)
+                value = GUIExtended.DrawGUISwitch(variable.Value.variableType.ToString(), variable.Value.value);
+            else
+                value = GUIExtended.DrawGUIUObject(variable.Value.value);
+            GUILayout.EndHorizontal();
+            if (value != null)
+            {
+                if (value.Item1 == true)
+                    GUIChanged = true;
+                variable.Value.value = value.Item2;
+            }
             if (name != variable.Value.name)
                 renameds.Add(variable.Key, variable.Value);
+            EditorGUILayout.EndVertical();
         }
         foreach (var renamed in renameds)
         {
@@ -45,9 +82,11 @@ public class VCSUGraphDrawer : Editor
             else
                 variables.Insert(index, new XmlKeyValuePair<string, VariableTest>(renamed.Key, renamed.Value));
         }
-        TempVariable = EditorGUILayout.TextField(TempVariable);
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("ADD") && !string.IsNullOrEmpty(TempVariable))
+        var trect = EditorGUILayout.BeginHorizontal(EditorStyles.inspectorFullWidthMargins);
+        var rect = GUILayoutUtility.GetRect(trect.width, trect.height + 16);
+        var tboxRect = new Rect(trect.x, rect.y, trect.width - 30, rect.height);
+        TempVariable = EditorGUI.TextField(tboxRect, TempVariable);
+        if (GUI.Button(new Rect(trect.width - 30, rect.y, 30, rect.height), '\u002B'.ToString()) && !string.IsNullOrEmpty(TempVariable))
         {
             var variable = new VariableTest();
             variable.name = TempVariable;
@@ -55,6 +94,12 @@ public class VCSUGraphDrawer : Editor
             TempVariable = string.Empty;
             GUIChanged = true;
         }
+        if (string.IsNullOrEmpty(TempVariable))
+        {
+            EditorGUI.LabelField(tboxRect, "(New Variable Name)", TempLable());
+        }
+        EditorGUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
         if (GUILayout.Button("REMOVE"))
         {
             if (variables.Count > 0)
@@ -64,15 +109,17 @@ public class VCSUGraphDrawer : Editor
             }
         }
         GUILayout.EndHorizontal();
+        if (variables != null && variables.Count > 0)
+            SerializeData();
         serializedObject.ApplyModifiedProperties();
     }
 
     public void OnEnable()
     {
-        if (!string.IsNullOrEmpty(graph.XmlName) && File.Exists(graph.XmlName))
+        if (!string.IsNullOrEmpty(graph.XmlData))
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(XmlDictionary<string, VariableTest>));
-            using (StreamReader reader = new StreamReader(graph.XmlName))
+            using (StringReader reader = new StringReader(graph.XmlData))
             {
                 variables = (XmlDictionary<string, VariableTest>)xmlSerializer.Deserialize(reader);
             }
@@ -81,21 +128,26 @@ public class VCSUGraphDrawer : Editor
 
     public void OnDisable()
     {
-        if (string.IsNullOrEmpty(graph.XmlName) || !File.Exists(graph.XmlName))
+        SerializeData();
+        AssetDatabase.Refresh();
+        AssetDatabase.SaveAssets();
+    }
+
+    public void SerializeData()
+    {
+        if (!EditorApplication.isPlaying)
         {
-            graph.XmlName = AssetDatabase.GenerateUniqueAssetPath("Assets/Serialized Data/" + graph.GetInstanceID() + ".txt");
-            EditorUtility.SetDirty(graph);
-            AssetDatabase.SaveAssets();
-        }
-        if (GUIChanged)
-        {
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(XmlDictionary<string, VariableTest>));
-            using (StreamWriter writer = new StreamWriter(graph.XmlName))
+            if (GUIChanged)
             {
-                xmlSerializer.Serialize(writer, variables);
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(XmlDictionary<string, VariableTest>));
+                using (StringWriter writer = new StringWriter())
+                {
+                    xmlSerializer.Serialize(writer, variables);
+                    graph.XmlData = writer.ToString();
+                }
+                EditorUtility.SetDirty(graph);
+                GUIChanged = false;
             }
-            AssetDatabase.Refresh();
-            GUIChanged = false;
         }
     }
 }
@@ -152,7 +204,6 @@ public class XmlDictionary<TKey, Tvalue> : List<XmlKeyValuePair<TKey, Tvalue>>
 
     public new bool RemoveAt(int index)
     {
-        Debug.Log(base.Count > 0 && Keys.Count > 0);
         if (base.Count > 0 && Keys.Count > 0)
         {
             base.RemoveAt(index);
@@ -225,7 +276,6 @@ public class VCSUGraphDrawer : Editor
 [XmlInclude(typeof(Enum))]
 [XmlInclude(typeof(float))]
 [XmlInclude(typeof(Gradient))]
-[XmlInclude(typeof(UnityEngine.Object))]
 [XmlInclude(typeof(Rect))]
 [XmlInclude(typeof(RectInt))]
 [XmlInclude(typeof(string))]
@@ -245,6 +295,7 @@ public class VCSUGraphDrawer : Editor
 [XmlInclude(typeof(ulong))]
 [XmlInclude(typeof(long))]
 [XmlInclude(typeof(VariableTest))]
+[XmlInclude(typeof(VCSUObject))]
 [Serializable]
 public class VariableTest
 {

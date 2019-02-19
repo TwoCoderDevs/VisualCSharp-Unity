@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
-
+[Callable]
+[Receivable]
 public class DebugLogSymbole : Symbole
 {
     [Input(1, 1, 0, 1,ValueProp.Hide)] public object A;
@@ -21,6 +22,7 @@ public class DebugLogSymbole : Symbole
             switch (m_debugLogType)
             {
                 case DebugLogType.Log:
+                    SymboleManager.DrawSymbole(GetInstanceID());
                     object a = GetInputValue<object>("A");
                     Debug.Log(a);
                     break;

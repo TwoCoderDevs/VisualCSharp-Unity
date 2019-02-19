@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System.IO;
+using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEditor;
 
@@ -31,30 +33,40 @@ public class FlowchartEditorWindow : EditorWindow
 
     public static void Init(VCSUGraph graph)
     {
-        FlowchartEditorWindow few = GetWindow<FlowchartEditorWindow>();
-        few.titleContent = new GUIContent("VisualCS Unity");
-        few.symboleManager = new SymboleManager(few);
-        few.symboleManager.graph = graph;
-        few.eventManager = new EventManager(few.symboleManager, few, OnPan);
-        few.Show();
+        if (graph)
+        {
+            FlowchartEditorWindow few = GetWindow<FlowchartEditorWindow>();
+            few.titleContent = new GUIContent("VisualCS Unity");
+            few.Load(graph);
+            few.Show();
+        }
     }
 
     private void OnEnable()
     {
         GUIScaleUtility.CheckInit();
         _gridTex = LoadResources.GetTexture("Grid");
-        if (EditorPrefs.HasKey("VCSU Graph Last"))
+        bool loaded = false;
+        if (EditorPrefs.HasKey("VCSU Graph Last ID"))
         {
-            symboleManager = new SymboleManager(this);
-            symboleManager.graph = AssetDatabase.LoadAssetAtPath<VCSUGraph>(EditorPrefs.GetString("VCSU Graph Last"));
-            eventManager = new EventManager(symboleManager, this, OnPan);
-            EditorPrefs.DeleteKey("VCSU Graph Last");
+            loaded = Load(EditorPrefs.GetInt("VCSU Graph Last ID"));
+            EditorPrefs.DeleteKey("VCSU Graph Last ID");
         }
+        if (!loaded)
+            if (EditorPrefs.HasKey("VCSU Graph Last"))
+            {
+                Load(EditorPrefs.GetString("VCSU Graph Last"));
+                EditorPrefs.DeleteKey("VCSU Graph Last");
+            }
+
     }
     private void OnDisable()
     {
         if (symboleManager != null && symboleManager.graph)
+        {
+            EditorPrefs.SetInt("VCSU Graph Last ID", symboleManager.graph.GetInstanceID());
             EditorPrefs.SetString("VCSU Graph Last", (AssetDatabase.GetAssetPath(symboleManager.graph)));
+        }
     }
     // Start is called before the first frame update
     private void OnGUI()
@@ -74,17 +86,7 @@ public class FlowchartEditorWindow : EditorWindow
             var graph = symboleManager.graph = CreateInstance<VCSUGraph>();
             if (!System.IO.Directory.Exists("Assets/VisualCSharpUnity/Graphs/Temp"))
                 System.IO.Directory.CreateDirectory("Assets/VisualCSharpUnity/Graphs/Temp");
-            AssetDatabase.CreateAsset(symboleManager.graph, "Assets/VisualCSharpUnity/Graphs/Temp/test.asset");
-            if(graph.symboles != null)
-            foreach (var symbole in graph.symboles)
-            {
-                AssetDatabase.AddObjectToAsset(symbole, "Assets/VisualCSharpUnity/Graphs/Temp/test.asset");
-            }
-            if (graph.connectionPoints != null)
-                foreach (var connectionPoint in graph.connectionPoints)
-            {
-                AssetDatabase.AddObjectToAsset(connectionPoint, "Assets/VisualCSharpUnity/Graphs/Temp/test.asset");
-            }
+            AssetDatabase.CreateAsset(symboleManager.graph, "Assets/VisualCSharpUnity/Graphs/Temp/Temp.asset");
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             ProjectWindowUtil.ShowCreatedAsset(graph);
@@ -96,7 +98,14 @@ public class FlowchartEditorWindow : EditorWindow
             Load();
         if (GUILayout.Button("Close", "ToolbarButton"))
             CloseGraph();
+        if (symboleManager != null && symboleManager.graph)
+            symboleManager.ShowThread = GUILayout.Toggle(symboleManager.ShowThread, "ThreadHighLight", "ToolbarButton");
         GUILayout.FlexibleSpace();
+        if (symboleManager != null && symboleManager.graph)
+        {
+            symboleManager.UpdateTime = EditorGUILayout.Slider("ThreadHighLightSpeed", symboleManager.UpdateTime,1,10);
+            GUILayout.Label(symboleManager.graph.name);
+        }
         GUILayout.EndHorizontal();
         if (symboleManager != null)
         {
@@ -125,10 +134,45 @@ public class FlowchartEditorWindow : EditorWindow
 
     public void Load()
     {
+        var path = EditorUtility.OpenFilePanel("Load Graph", "Assets/", "asset");
+        Load(path.Remove(0,Application.dataPath.Length-6));
+    }
+
+    public bool Load(string path)
+    {
+        var hasgraph = AssetDatabase.LoadAssetAtPath<VCSUGraph>(path);
+        if (hasgraph)
+        {
+            Load(hasgraph);
+            return true;
+        }
+        return false;
+    }
+
+    public bool Load(int InstanceID)
+    {
+        var hasgraph = (VCSUGraph)EditorUtility.InstanceIDToObject(InstanceID);
+        if (hasgraph)
+        {
+            Load(hasgraph);
+            return true;
+        }
+        return false;
+    }
+
+    public void Load(VCSUGraph graph)
+    {
         symboleManager = new SymboleManager(this);
         eventManager = new EventManager(symboleManager, this, OnPan);
-        var asset = AssetDatabase.LoadAssetAtPath<VCSUGraph>("Assets/test.asset");
-        symboleManager.graph = asset;
+        symboleManager.graph = graph;
+        if (!string.IsNullOrEmpty(graph.XmlData))
+        {
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(XmlDictionary<string, VariableTest>));
+            using (StringReader reader = new StringReader(graph.XmlData))
+            {
+                symboleManager.graph.variables = (XmlDictionary<string, VariableTest>)xmlSerializer.Deserialize(reader);
+            }
+        }
     }
 
     public void DrawEditor()
@@ -194,7 +238,7 @@ public class FlowchartEditorWindow : EditorWindow
         }
     }
 
-    public Vector2 GraphToScreenSpace(Vector2 graphPos)
+    public static Vector2 GraphToScreenSpace(Vector2 graphPos)
     {
         return graphPos + panOffset;
     }

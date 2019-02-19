@@ -10,10 +10,14 @@ public struct Field
 {
     public string name;
     public FieldInfo field;
-    public Field(string name, FieldInfo field)
+    public bool isVariableEnum;
+    public bool isEnumLable;
+    public Field(string name, FieldInfo field, bool isVariableEnum = false, bool isEnumLable = false)
     {
         this.name = name;
         this.field = field;
+        this.isVariableEnum = isVariableEnum;
+        this.isEnumLable = isEnumLable;
     }
 
     public void Assign(FieldInfo field)
@@ -23,6 +27,10 @@ public struct Field
 }
 public abstract class Symbole : ScriptableObject, IDisposable
 {
+    public ConnectionCallPoint Receive;
+    public ConnectionCallPoint Call;
+    public bool shouldCall = false;
+    public bool shouldReceive = false;
     public Rect NodeSize = new Rect(0,0,100,200);
     public List<ConnectionPoint> fieldPoints;
     [SerializeField]
@@ -33,6 +41,15 @@ public abstract class Symbole : ScriptableObject, IDisposable
         Update();
     }
 
+    private void OnEnable()
+    {
+        if (name.Contains("(Clone)"))
+        {
+            var i = name.IndexOf("(Clone)");
+            name = name.Remove(i);
+        }
+    }
+
     public virtual void Update()
     {
 
@@ -41,9 +58,25 @@ public abstract class Symbole : ScriptableObject, IDisposable
     public void InitializeAttributes()
     {
         Type type = this.GetType();
+        if (type.GetCustomAttribute(typeof(ReceivableAttribute)) != null)
+        {
+            shouldReceive = true;
+            Receive = CreateInstance<ConnectionCallPoint>();
+            Receive.Init(this, ConnectionType.Receive);
+            SymboleManager.AddCallStatic(Receive);
+        }
+        if (type.GetCustomAttribute(typeof(CallableAttribute)) != null)
+        {
+            shouldCall = true;
+            Call = CreateInstance<ConnectionCallPoint>();
+            Call.Init(this, ConnectionType.Call);
+            SymboleManager.AddCallStatic(Call);
+        }
         var fields = type.GetFields();
         foreach (var field in fields)
         {
+            if (field.GetCustomAttribute(typeof(IgnoreAttribute)) != null)
+                continue;
             var attri = field.GetCustomAttribute(typeof(PointAttribute));
             if (attri != null)
             {
@@ -59,11 +92,22 @@ public abstract class Symbole : ScriptableObject, IDisposable
             }
             else
             {
-                if (field.IsPublic && !field.IsStatic && field.Name != "NodeSize")
+                if (field.IsPublic && !field.IsStatic && field.Name != "NodeSize" && field.Name != "fieldPoints" && field.Name != "NoOutput" && field.Name != "shouldCall" && field.Name != "Call")
                 {
                     if (childFields == null)
                         childFields = new List<Field>();
-                    childFields.Add(new Field(field.Name,field));
+                    if (field.GetCustomAttribute(typeof(VariableEnumAttribute)) != null)
+                    {
+                        childFields.Add(new Field(field.Name, field, true));
+                    }
+                    else if(field.GetCustomAttribute(typeof(EnumLableAttribute)) != null)
+                    {
+                        childFields.Add(new Field(field.Name, field, isEnumLable: true));
+                    }
+                    else
+                    {
+                        childFields.Add(new Field(field.Name, field, false));
+                    }
                 }
             }
         }
@@ -82,37 +126,45 @@ public abstract class Symbole : ScriptableObject, IDisposable
 
     public virtual void OnGUI()
     {
-        foreach (var childField in childFields)
-        {
-            if (childField.field == null)
-                childField.Assign(GetField(childField.name));
-            if (childField.field.FieldType.IsEnum)
+        if (childFields != null)
+            foreach (var childField in childFields)
             {
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Space(13);
-                SetValue(childField.field, EditorGUILayout.EnumPopup(childField.name.AddWordSpace(), GetValue<Enum>(childField), GUILayout.Width(NodeSize.width - 13)));
-                EditorGUILayout.EndHorizontal();
-            } 
-        }
+                if (childField.field == null)
+                    childField.Assign(GetField(childField.name));
+                if (childField.field.FieldType.IsEnum)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Space(13);
+                    SetValue(childField.field, EditorGUILayout.EnumPopup(childField.name.AddWordSpace(), GetValue<Enum>(childField), GUILayout.Width(NodeSize.width - 13)));
+                    EditorGUILayout.EndHorizontal();
+                    continue;
+                }
+            }
         if (!EditorApplication.isPlaying)
         {
-            foreach (var field in fieldPoints)
+            /*foreach (var field in fieldPoints)
                 if (field.connectionType == ConnectionType.Output && field.Connections.Count > 0)
                 {
                     var c = GUIGetValue(field);
                     field.SetValue(c);
-                }
-            if (NoOutput)
+                }*/
+            //if (NoOutput)
                 GUIUpdate();
         }
     }
 
-    public object GUIGetValue(ConnectionPoint point)
+    public void GUIGetValue(ConnectionPoint point)
     {
-        return GetValue(point);
+        point.SetValue(GetValue(point));
     }
 
     public virtual object GetValue(ConnectionPoint point)
+    {
+
+        return default;
+    }
+
+    public virtual object SetValue(ConnectionPoint point)
     {
 
         return default;
@@ -130,13 +182,16 @@ public abstract class Symbole : ScriptableObject, IDisposable
             {
                 if (field && field.Connections.Count > 0)
                 {
+                    field.Connections[0].Set();
                     field.SetValue(field.Connections[0].GetValue<T>());
                     return field.GetValue<T>();
                 }
                 else
+                {
                     return field.GetValue<T>();
+                }
             }
-
+        SymboleManager.DrawSymbole(GetHashCode());
         return (T)default;
     }
 
@@ -246,5 +301,52 @@ public class PointAttribute : Attribute
         this.color = new Color(r, g, b, a);
         this.connectionType = connectionType;
         this.valueProp = valueProp;
+    }
+}
+[AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
+public class VariableEnumAttribute : Attribute
+{
+    
+    public VariableEnumAttribute()
+    {
+
+    }
+}
+[AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
+public class EnumLableAttribute : Attribute
+{
+
+    public EnumLableAttribute()
+    {
+
+    }
+}
+
+[AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
+public class IgnoreAttribute : Attribute
+{
+
+    public IgnoreAttribute()
+    {
+
+    }
+}
+
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public class CallableAttribute : Attribute
+{
+
+    public CallableAttribute()
+    {
+
+    }
+}
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public class ReceivableAttribute : Attribute
+{
+
+    public ReceivableAttribute()
+    {
+
     }
 }

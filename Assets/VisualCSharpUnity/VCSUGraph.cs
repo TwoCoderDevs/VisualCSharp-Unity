@@ -12,6 +12,9 @@ public class VCSUGraph : ScriptableObject
 {
     public List<Symbole> symboles;
     public List<ConnectionPoint> connectionPoints;
+    public List<ConnectionCallPoint> callPoints;
     public XmlDictionary<string, VariableTest> variables = new XmlDictionary<string, VariableTest>();
-    public string XmlName = string.Empty;
+    public string XmlData = string.Empty;
+    public int OriginalIID;
+    public string OriginalPath;
 }
