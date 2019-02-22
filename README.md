@@ -7,7 +7,7 @@ A clean Visual Scriptor started and writen by Shrek...
 - 1 Programmer needed...
 
 You can talk to me on discord
-https://discord.gg/NhqRqQ
+https://discord.gg/Abe8GJq
 Or directly message me on
 twocoderdevs@gmail.com
 
