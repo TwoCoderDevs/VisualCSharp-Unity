@@ -31,6 +31,11 @@ public class VCSUGraph : ScriptableObject
         CallsValue.Add(Value);
     }
 
+    public void ChangeIndex(string Key, int Value)
+    {
+        CallsValue[CallsName.IndexOf(Key)] = Value;
+    }
+
     public bool RemoveCall(string Key)
     {
         CallsValue.RemoveAt(CallsName.IndexOf(Key));

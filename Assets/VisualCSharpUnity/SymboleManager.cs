@@ -471,19 +471,25 @@ public class SymboleManager
 
     private void MoveSelectedTotop(Symbole symbole)
     {
-        var p = points;
         if (symbole != symboles.LastOrDefault())
         {
             symboles.Remove(symbole);
             symboles.Add(symbole);
-            foreach (var point in symbole.fieldPoints)
-            {
-                p.Remove(point);
-                p.Add(point);
-            }
-            points = p;
             GUI.changed = true;
         }
+        new System.Threading.Thread(() =>
+        {
+            int i = 0;
+            foreach (var s in symboles)
+            {
+                if (s.GetType().GetCustomAttribute(typeof(MethodSymboleAttribute)) != null)
+                {
+                    graph.ChangeIndex(s.GetType().Name, i);
+                }
+                i++;
+            }
+        })
+        { IsBackground = true}.Start();
     }
 
     public bool OnMouseOverInputPoint(Vector2 mousePosition)
