@@ -2,6 +2,14 @@
 
 A clean Visual Scriptor started and writen by Shrek...
 
-#Tested by Thedetective456
-#Note all the script is writen by and the project has no assets from outside sources
-#Releasing Source to public is prohibited
+- Tested by Thedetective456
+- 5 More testers needed...
+- 1 Programmer needed...
+
+You can talk to me on discord
+https://discord.gg/Abe8GJq
+Or directly message me on
+twocoderdevs@gmail.com
+
+# Note all the script is writen by shrek and the project has no assets from outside sources except for guiscale.cs and tex resource...
+# This is a free source build of the real build...
