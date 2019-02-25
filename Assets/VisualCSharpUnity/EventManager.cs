@@ -60,13 +60,15 @@ public class EventManager
         bool overS_P = false;
         if ( @event.type == EventType.MouseDown && @event.button == 0 && @event.mousePosition.y > 18)
             overS_P = symboleManager.OnMouseOverPoint_Symbole(@event.mousePosition);
+        if (symboleManager.selectedOutputCallPoint)
+            overS_P = OnCallPointSelected(symboleManager.selectedOutputCallPoint);
         if (symboleManager.selectedOutputPoint)
             overS_P = OnPointSelected(symboleManager.selectedOutputPoint);
         if (symboleManager.selectedSymbole)
             overS_P = OnNodeSelected(symboleManager.selectedSymbole);
         if (@event.type == EventType.MouseDown && @event.button == 1 && @event.mousePosition.y > 18)
             overS_P = symboleManager.RemoveSymbole(@event.mousePosition);
-        if (!overS_P && !symboleManager.selectedOutputPoint)
+        if (!overS_P && !symboleManager.selectedOutputPoint && !symboleManager.selectedOutputCallPoint)
             switch (@event.type)
             {
                 case EventType.MouseDown:
@@ -87,6 +89,8 @@ public class EventManager
                             symboleManager.selectedSymbole = null;
                             symboleManager.selectedInputPoint = null;
                             symboleManager.selectedOutputPoint = null;
+                            symboleManager.selectedInputCallPoint = null;
+                            symboleManager.selectedOutputCallPoint = null;
                             Selection.activeObject = symboleManager.graph;
                             isPaned = true;
                             GUI.changed = true;
@@ -167,13 +171,40 @@ public class EventManager
                     {
                         point.AddConnection(symboleManager.selectedInputPoint);
                         symboleManager.selectedInputPoint.AddConnection(point);
-                        SymboleManager.selections.Clear();
+                        if (SymboleManager.selections != null && SymboleManager.selections.Count > 0)
+                            SymboleManager.selections.Clear();
                     }
                 symboleManager.selectedInputPoint = null;
                 symboleManager.selectedOutputPoint = null;
                 break;
         }
         if (point.PointPos.Contains(few.InvGraphToScreenSpace(e.mousePosition)) && e.mousePosition.y > 18)
+            return true;
+        return false;
+    }
+
+    public bool OnCallPointSelected(ConnectionCallPoint point)
+    {
+        var e = Event.current;
+
+        symboleManager.OnMouseOverInputCallPoint(e.mousePosition);
+
+        switch (e.type)
+        {
+            case EventType.MouseUp:
+                if (symboleManager.selectedInputCallPoint)
+                    if (point.symbole != symboleManager.selectedInputCallPoint.symbole && symboleManager.selectedInputCallPoint.Point.Contains(e.mousePosition))
+                    {
+                        point.AddConnection(symboleManager.selectedInputCallPoint);
+                        symboleManager.selectedInputCallPoint.AddConnection(point);
+                        if (SymboleManager.selections != null && SymboleManager.selections.Count > 0)
+                            SymboleManager.selections.Clear();
+                    }
+                symboleManager.selectedInputCallPoint = null;
+                symboleManager.selectedOutputCallPoint = null;
+                break;
+        }
+        if (point.Point.Contains(e.mousePosition) && e.mousePosition.y > 18)
             return true;
         return false;
     }

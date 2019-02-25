@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,14 +95,19 @@ public class Flowchart : MonoBehaviour
 {
     public VCSUGraph graph;
     public XmlDictionary<string, VariableTest> variables { get { if (graph) return graph.variables; return null; } set { graph.variables = value; } }
+    private DynamicClass dClass;
     // Use this for initialization
     void Start()
     {
+        //graph.CallFunctionMethod("StartSymbole");
+        dClass = new DynamicClass();
+        dClass.Import(graph);
+        dClass.AssignLibrary(this.gameObject);
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        //graph.CallFunctionMethod("UpdateSymbole");
     }
 }

@@ -3,7 +3,7 @@ using UnityEditor;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-
+using System.Threading;
 public enum ConnectionType { Input, Output, Call, Receive}
 public enum ValueProp { Show, Name, Hide, }
 public class ConnectionPoint : ScriptableObject
@@ -19,7 +19,6 @@ public class ConnectionPoint : ScriptableObject
     public Texture2D tex;
     public Texture2D hasCon;
     public Texture2D noCon;
-
     public void OnEnable()
     {
         if (Connections == null)
@@ -31,6 +30,8 @@ public class ConnectionPoint : ScriptableObject
             var i = name.IndexOf("(Clone)");
             name = name.Remove(i);
         }
+        if (field == null && !string.IsNullOrEmpty(name))
+            field = symbole.GetField(name);
     }
 
     public void AddConnection(ConnectionPoint connectionPoint)
@@ -51,10 +52,14 @@ public class ConnectionPoint : ScriptableObject
         Connections.Clear();
     }
 
-    public void RemoveConnection(Symbole symbole)
+    public bool RemoveConnection(Symbole symbole)
     {
-        foreach (var point in symbole.fieldPoints)
-            Connections.Remove(point);
+        if (this.symbole == symbole)
+            return true;
+        if (symbole.fieldPoints != null && symbole.fieldPoints.Count > 0)
+            foreach (var point in symbole.fieldPoints)
+                Connections.Remove(point);
+        return false;
     }
 
     public Rect PointPos;
@@ -154,9 +159,9 @@ public class ConnectionPoint : ScriptableObject
                     break;
                 case "Gradient":
                     SetValue(EditorGUILayout.GradientField(name, GetValue<Gradient>(), GUILayout.Width(symbole.NodeSize.width - 13)));
-                     break;
+                    break;
                 case "Object":
-                    if(field.FieldType.IsSubclassOf(typeof(UnityEngine.Object)))
+                    if (field.FieldType.IsSubclassOf(typeof(UnityEngine.Object)))
                         SetValue(EditorGUILayout.ObjectField(name, GetValue<UnityEngine.Object>(), field.FieldType, true, GUILayout.Width(symbole.NodeSize.width - 13)));
                     else
                         SetValue(EditorGUILayout.ObjectField(name, GetValue<UnityEngine.Object>(), typeof(UnityEngine.Object), true, GUILayout.Width(symbole.NodeSize.width - 13)));
@@ -208,12 +213,15 @@ public class ConnectionPoint : ScriptableObject
                 case "Int64":
                     SetValue(EditorGUILayout.LongField(name, GetValue<long>(), GUILayout.Width(symbole.NodeSize.width - 13)));
                     break;
-                //
-                
+                    //
+
             }
         if (valueProp == ValueProp.Name)
         {
-            EditorGUILayout.LabelField(name, OutputStyle, GUILayout.Width(symbole.NodeSize.width - 13));
+            if (connectionType == ConnectionType.Output)
+                EditorGUILayout.LabelField(name, OutputStyle, GUILayout.Width(symbole.NodeSize.width - 13));
+            else
+                EditorGUILayout.LabelField(name, GUILayout.Width(symbole.NodeSize.width - 13));
         }
         EditorGUILayout.EndHorizontal();
         if (rect != Rect.zero)

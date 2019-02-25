@@ -11,11 +11,11 @@ public class DebugLogSymbole : Symbole
 
     public override void Init()
     {
-        base.Init();
         NodeSize.width += 50;
+        base.Init();
     }
 
-    public override void Update()
+    public override void Function()
     {
         if (InputConnected("A"))
         {
@@ -28,5 +28,23 @@ public class DebugLogSymbole : Symbole
                     break;
             }
         }
+    }
+
+    public override string GetNameSpace()
+    {
+        return "using UnityEngine;";
+    }
+
+    public override string ToString()
+    {
+        if (InputConnected("A"))
+        {
+            var point = GetInputPoint("A");
+            var Id = point.Connections[0].symbole.GetInstanceID();
+            return string.Format(@"{0},
+    Debug.Log({1}_{2});", point.Connections[0].symbole.ToString(), point.Connections[0].name, (Id < 0)? Id * -1 : Id);
+        }
+
+        return "Debug.Log(\"\");";
     }
 }

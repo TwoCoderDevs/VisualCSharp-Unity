@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.IO;
 using System.Linq;
 using UnityEngine;
@@ -34,6 +35,13 @@ public class VCSUGraphDrawer : Editor
             if (AssetDatabase.Contains(flowchart.graph))
             {
                 flowchart.graph = VCSUObject.Clone(flowchart.graph);
+            }
+        if (!EditorApplication.isPlaying)
+            if (GUILayout.Button("Generate Test Script"))
+            {
+                var dc = new DynamicClass();
+                dc.Import(flowchart.graph);
+                dc.Export();
             }
         GUILayout.BeginHorizontal(EditorStyles.inspectorDefaultMargins);
         if (GUILayout.Button("Open Graph"))
@@ -158,20 +166,17 @@ public class VCSUGraphDrawer : Editor
 
     public void SerializeData()
     {
-        if (!EditorApplication.isPlaying)
+        if (GUIChanged)
         {
-            if (GUIChanged)
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(XmlDictionary<string, VariableTest>));
+            using (StringWriter writer = new StringWriter())
             {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(XmlDictionary<string, VariableTest>));
-                using (StringWriter writer = new StringWriter())
-                {
-                    xmlSerializer.Serialize(writer, variables);
-                    flowchart.graph.XmlData = writer.ToString();
-                }
-                EditorUtility.SetDirty(flowchart.graph);
-                AssetDatabase.SaveAssets();
-                GUIChanged = false;
+                xmlSerializer.Serialize(writer, variables);
+                flowchart.graph.XmlData = writer.ToString();
             }
+            EditorUtility.SetDirty(flowchart.graph);
+            AssetDatabase.SaveAssets();
+            GUIChanged = false;
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEditor;
-using System.ObjectSerializer;
 [Serializable]
 public class SymboleManager
 {
@@ -13,6 +13,8 @@ public class SymboleManager
     public  Symbole selectedSymbole;
     public ConnectionPoint selectedInputPoint;
     public ConnectionPoint selectedOutputPoint;
+    public ConnectionCallPoint selectedInputCallPoint;
+    public ConnectionCallPoint selectedOutputCallPoint;
     public List<ConnectionPoint> points { get { if (graph) return graph.connectionPoints; return null; } set{ graph.connectionPoints = value; } }
     public List<ConnectionCallPoint> callPoints { get { if (graph) return graph.callPoints; return null; } set { graph.callPoints = value; } }
     private GUIStyle textStyle;
@@ -135,9 +137,23 @@ public class SymboleManager
                             //var col = Color.Lerp(point.knobeColor, input.knobeColor, 0.5f);
                             DrawConnectionBezier(FlowchartEditorWindow.GraphToScreenSpace(point.PointPos.center), FlowchartEditorWindow.GraphToScreenSpace(input.PointPos.center), point.knobeColor, input.knobeColor );
                         }
+        if (callPoints != null)
+            foreach (var point in callPoints)
+                if (point.connectionType == ConnectionType.Call)
+                    foreach (var receive in point.connections)
+                        if (receive.connectionType == ConnectionType.Receive)
+                        {
+                            //var col = Color.Lerp(point.knobeColor, input.knobeColor, 0.5f);
+                            DrawBezier(point.Point.center, receive.Point.center, point.knobeColor);
+                        }
         if (symboles != null)
         {
             DrawSymboles();
+            GUI.changed = true;
+        }
+        if (selectedOutputCallPoint)
+        {
+            DrawBezierPreview(few.InvGraphToScreenSpace(selectedOutputCallPoint.Point.center));
             GUI.changed = true;
         }
         if (selectedOutputPoint)
@@ -161,10 +177,11 @@ public class SymboleManager
             var r = EditorGUILayout.BeginVertical();
             var lw = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 80;
-            foreach (var point in symboles[i].fieldPoints)
-            {
-                point.Draw();
-            }
+            if (symboles[i].fieldPoints != null)
+                foreach (var point in symboles[i].fieldPoints)
+                {
+                    point.Draw();
+                }
             symboles[i].OnGUI();
             EditorGUIUtility.labelWidth = lw;
             EditorGUILayout.EndVertical();
@@ -275,20 +292,37 @@ public class SymboleManager
     {
         if (selections != null && selections.Count > 0)
             selections.Clear();
-        var Removeables = points.Where(x => x.symbole == selectedSymbole).ToList();
-        if (points != null)
-            foreach (var point in points)
-                    point.RemoveConnection(selectedSymbole);
-        foreach (var removable in Removeables)
+        if (points != null && points.Count > 0)
         {
-            AssetDatabase.RemoveObjectFromAsset(removable);
-            points.Remove(removable);
+            var PRemoveables = points.Where(x => x.RemoveConnection(selectedSymbole)).ToList();
+            foreach (var removable in PRemoveables)
+            {
+                AssetDatabase.RemoveObjectFromAsset(removable);
+                points.Remove(removable);
+            }
+        }
+        if (callPoints != null && points.Count > 0)
+        {
+            var CPRemoveables = callPoints.Where(x => x.RemoveConnection(selectedSymbole)).ToList();
+            foreach (var removable in CPRemoveables)
+            {
+                AssetDatabase.RemoveObjectFromAsset(removable);
+                callPoints.Remove(removable);
+            }
         }
         if (selectedSymbole.shouldCall && selectedSymbole.Call)
         {
             AssetDatabase.RemoveObjectFromAsset(selectedSymbole.Call);
         }
-        selections.Remove(selectedSymbole.GetInstanceID());
+        if (selectedSymbole.shouldReceive && selectedSymbole.Receive)
+        {
+            AssetDatabase.RemoveObjectFromAsset(selectedSymbole.Receive);
+        }
+        if (graph.ContainCall(selectedSymbole.name))
+        {
+            graph.RemoveCall(graph.CallsValue[graph.CallsName.IndexOf(selectedSymbole.name)]);
+            graph.RemoveCall(selectedSymbole.name);
+        }
         AssetDatabase.RemoveObjectFromAsset(selectedSymbole);
         symboles.Remove(selectedSymbole);
         selectedSymbole = null;
@@ -302,6 +336,8 @@ public class SymboleManager
         selectedSymbole = null;
         selectedInputPoint = null;
         selectedOutputPoint = null;
+        selectedInputCallPoint = null;
+        selectedOutputCallPoint = null;
         if (RemovedCP != null)
         {
             foreach (var remove in RemovedCP)
@@ -376,12 +412,17 @@ public class SymboleManager
         selectedSymbole = null;
         selectedInputPoint = null;
         selectedOutputPoint = null;
+        selectedInputCallPoint = null;
+        selectedOutputCallPoint = null;
         points = RemovedCP;
+        callPoints = RemovedCCP;
         symboles = RemovedS;
         if (RemovedS != null)
             RemovedS = null;
         if (RemovedCP != null)
             RemovedCP = null;
+        if (RemovedCCP != null)
+            RemovedCCP = null;
         Selection.activeObject = null;
     }
 
@@ -467,8 +508,37 @@ public class SymboleManager
         return false;
     }
 
+    public bool OnMouseOverInputCallPoint(Vector2 mousePosition)
+    {
+        //mousePosition = few.InvGraphToScreenSpace(mousePosition);
+        if (callPoints != null)
+        {
+            selectedInputPoint = null;
+            for (int i = callPoints.Count - 1; i > -1; i--)
+            {
+                if (callPoints[i].connectionType == ConnectionType.Call)
+                    continue;
+                var area = callPoints[i].Point;
+                if (area.Contains(mousePosition))
+                {
+                    selectedInputCallPoint = callPoints[i];
+                    //callback(symboles[i]);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public bool OnMouseOverPoint_Symbole(Vector2 mousePosition)
     {
+        if (OnMouseOverInputCallPoint(mousePosition) && !selectedOutputCallPoint)
+        {
+            selectedInputCallPoint.RemoveConnections();
+            selectedInputCallPoint = null;
+        }
+        if (OnMouseOverOutputCallPoint(mousePosition))
+            return true;
         if (OnMouseOverInputPoint(mousePosition) && !selectedOutputPoint)
         {
             selectedInputPoint.RemoveConnections();
@@ -476,7 +546,7 @@ public class SymboleManager
         }
         if (OnMouseOverOutputPoint(mousePosition))
             return true;
-        if (!selectedOutputPoint)
+        if (!selectedOutputPoint && !selectedOutputCallPoint)
             if (OnMouseOverSymbole(mousePosition))
                 return true;
         return false;
@@ -509,25 +579,62 @@ public class SymboleManager
         return false;
     }
 
+    private bool OnMouseOverOutputCallPoint(Vector2 mousePosition)
+    {
+        //mousePosition = few.InvGraphToScreenSpace(mousePosition);
+        if (callPoints != null)
+        {
+            selectedInputPoint = null;
+            for (int i = callPoints.Count - 1; i > -1; i--)
+            {
+                if (callPoints[i].connectionType == ConnectionType.Receive)
+                    continue;
+                var area = callPoints[i].Point;
+                if (area.Contains(mousePosition))
+                {
+                    selectedOutputCallPoint = callPoints[i];
+                    break;
+                }
+            }
+            if (selectedOutputCallPoint)
+            {
+                MoveSelectedTotop(selectedOutputCallPoint.symbole);
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void AddNewSymbole(Type symboleType, Vector2 mousePosition)
     {
-        if (selections != null && selections.Count > 0)
-            selections.Clear();
-        mousePosition = few.InvGraphToScreenSpace(mousePosition);
-        if (symboles == null)
+        if (!graph.ContainCall(symboleType.Name))
         {
-            symboles = new List<Symbole>();
+            if (selections != null && selections.Count > 0)
+                selections.Clear();
+            mousePosition = few.InvGraphToScreenSpace(mousePosition);
+            if (symboles == null)
+            {
+                symboles = new List<Symbole>();
+            }
+            var symbole = ScriptableObject.CreateInstance(symboleType) as Symbole;
+            symbole.NodeSize.position = mousePosition;
+            symbole.InitializeAttributes();
+            Selection.activeObject = symbole;
+            symboles.Add(symbole);
+            symbole.CloneRename();
+            if (symbole.GetType().GetCustomAttribute(typeof(MethodSymboleAttribute)) != null)
+            {
+                graph.AddCall(symbole.name, symboles.IndexOf(symbole));
+            }
+            AssetDatabase.AddObjectToAsset(symbole, graph);
+            if (symbole.fieldPoints != null)
+                foreach (var connectionPoint in symbole.fieldPoints)
+                    AssetDatabase.AddObjectToAsset(connectionPoint, graph);
+            if (symbole.Call)
+                AssetDatabase.AddObjectToAsset(symbole.Call, graph);
+            if (symbole.Receive)
+                AssetDatabase.AddObjectToAsset(symbole.Receive, graph);
+            AssetDatabase.SaveAssets();
         }
-        var symbole = ScriptableObject.CreateInstance(symboleType) as Symbole;
-        symbole.NodeSize.position = mousePosition;
-        symbole.InitializeAttributes();
-        if (symbole.name == string.Empty)
-            symbole.name = symbole.GetType().Name;
-        Selection.activeObject = symbole;
-        symboles.Add(symbole);
-        AssetDatabase.AddObjectToAsset(symbole, graph);
-        foreach (var connectionPoint in symbole.fieldPoints)
-            AssetDatabase.AddObjectToAsset(connectionPoint, graph);
-        AssetDatabase.SaveAssets();
     }
 }

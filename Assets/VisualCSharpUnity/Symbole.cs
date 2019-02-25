@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEditor;
-using System.ObjectSerializer;
 [Serializable]
 public struct Field
 {
@@ -25,7 +24,7 @@ public struct Field
         this.field = field;
     }
 }
-public abstract class Symbole : ScriptableObject, IDisposable
+public abstract class Symbole : ScriptableObject
 {
     public ConnectionCallPoint Receive;
     public ConnectionCallPoint Call;
@@ -38,10 +37,10 @@ public abstract class Symbole : ScriptableObject, IDisposable
     public bool NoOutput = true;
     public void GUIUpdate()
     {
-        Update();
+        Function();
     }
 
-    private void OnEnable()
+    public void CloneRename()
     {
         if (name.Contains("(Clone)"))
         {
@@ -50,7 +49,12 @@ public abstract class Symbole : ScriptableObject, IDisposable
         }
     }
 
-    public virtual void Update()
+    public virtual void Function()
+    {
+
+    }
+
+    public virtual void CallerFunction()
     {
 
     }
@@ -58,11 +62,14 @@ public abstract class Symbole : ScriptableObject, IDisposable
     public void InitializeAttributes()
     {
         Type type = this.GetType();
+        if (name == string.Empty)
+            name = type.Name;
         if (type.GetCustomAttribute(typeof(ReceivableAttribute)) != null)
         {
             shouldReceive = true;
             Receive = CreateInstance<ConnectionCallPoint>();
             Receive.Init(this, ConnectionType.Receive);
+            Receive.name = name+"Receive";
             SymboleManager.AddCallStatic(Receive);
         }
         if (type.GetCustomAttribute(typeof(CallableAttribute)) != null)
@@ -70,6 +77,7 @@ public abstract class Symbole : ScriptableObject, IDisposable
             shouldCall = true;
             Call = CreateInstance<ConnectionCallPoint>();
             Call.Init(this, ConnectionType.Call);
+            Call.name = name + "Receive";
             SymboleManager.AddCallStatic(Call);
         }
         var fields = type.GetFields();
@@ -92,7 +100,7 @@ public abstract class Symbole : ScriptableObject, IDisposable
             }
             else
             {
-                if (field.IsPublic && !field.IsStatic && field.Name != "NodeSize" && field.Name != "fieldPoints" && field.Name != "NoOutput" && field.Name != "shouldCall" && field.Name != "Call")
+                if (field.IsPublic && !field.IsStatic && field.Name != "NodeSize" && field.Name != "fieldPoints" && field.Name != "NoOutput" && field.Name != "shouldCall" && field.Name != "shouldReceive")
                 {
                     if (childFields == null)
                         childFields = new List<Field>();
@@ -122,6 +130,16 @@ public abstract class Symbole : ScriptableObject, IDisposable
     public void Serializeds()
     {
         
+    }
+
+    public void OnEnable()
+    {
+        if (childFields != null)
+            foreach (var childField in childFields)
+            {
+                if (childField.field == null)
+                    childField.Assign(GetField(childField.name));
+            }
     }
 
     public virtual void OnGUI()
@@ -191,8 +209,17 @@ public abstract class Symbole : ScriptableObject, IDisposable
                     return field.GetValue<T>();
                 }
             }
-        SymboleManager.DrawSymbole(GetHashCode());
         return (T)default;
+    }
+
+    public ConnectionPoint GetInputPoint(string fieldname)
+    {
+        foreach (var field in fieldPoints)
+            if (field.name == fieldname)
+            {
+                return field;
+            }
+        return default;
     }
 
     public bool InputConnected(string fieldname)
@@ -239,12 +266,6 @@ public abstract class Symbole : ScriptableObject, IDisposable
             field.SetValue(this, value);
     }
 
-    public void Dispose()
-    {
-        fieldPoints.Clear();
-        fieldPoints = null;
-    }
-
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public class InputAttribute : PointAttribute
     {
@@ -264,6 +285,11 @@ public abstract class Symbole : ScriptableObject, IDisposable
             this.connectionType = connectionType;
             this.valueProp = valueProp;
         }
+    }
+
+    public virtual string GetNameSpace()
+    {
+        return "using UnityEngine;";
     }
 }
 
@@ -346,6 +372,15 @@ public class ReceivableAttribute : Attribute
 {
 
     public ReceivableAttribute()
+    {
+
+    }
+}
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public class MethodSymboleAttribute : Attribute
+{
+
+    public MethodSymboleAttribute()
     {
 
     }

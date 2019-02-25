@@ -53,4 +53,14 @@ public class GetVariableSymbole : Symbole
         }
         base.OnGUI();
     }
+
+    public override string GetNameSpace()
+    {
+        return "using System;";
+    }
+
+    public override string ToString()
+    {
+        return string.Format("var Value_{0} = {1};",(GetInstanceID() < 0) ? GetInstanceID() * -1 : GetInstanceID(),Name);
+    }
 }
