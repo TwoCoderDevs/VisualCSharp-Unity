@@ -6,6 +6,9 @@ A clean Visual Scriptor started and writen by Shrek...
 - 5 More testers needed...
 - 1 Programmer needed...
 
+Creating a easy menu like add components..
+https://forum.unity.com/threads/custom-add-component-like-button.439730/
+
 You can talk to me on discord
 https://discord.gg/Abe8GJq
 Or directly message me on
