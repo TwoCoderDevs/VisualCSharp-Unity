@@ -1,6 +1,6 @@
 Usage:
 Code (CSharp):
- 
+ ```csharp
 public override void OnInspectorGUI() {
      ...
      var editorPath = Path.GetDirectoryName(AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(this)));
@@ -29,12 +29,14 @@ bool CanAddScript(MonoScript script) {
      }
      return !scriptClass.IsAbstract && scriptClass.IsSubclassOf(typeof(EquipmentBehaviour));
 }
- 
+```
+
 We need the AddScriptWindowBackup class for saving the added script. So we can add them after the compiler has finished his work. The AddComponentWindow use a internal function and don't need to wait for the compiler.
 
 And for you who don't know how to render the child objects like components:
 Code (CSharp):
- 
+
+ ```csharp
 public override void OnInspectorGUI() {
      ...
      foreach(var child in childComponents) {
@@ -55,4 +57,4 @@ void DrawEquipmentBehaviour(Editor editor) {
          editor.serializedObject.ApplyModifiedProperties();
      }
 }
- 
+```
